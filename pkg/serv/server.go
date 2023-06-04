@@ -22,11 +22,13 @@ func (ApiServ) GetHardwareValue(cont context.Context, req *pr.HardwareRequest) (
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		log.Fatalf("Я еблан забыл переделать логи: %v\n", err)
+		return nil, err
 	}
 
-	rows, err := dbPool.Query(context.Background(), "select param_name, current_value from public.hardware h join public.params p on p.param_id = h.param_id where h.hardware_id = $1;", req.HarwareId)
+	rows, err := dbPool.Query(context.Background(), "select param_name, current_value from public.unit u join public.params p on p.param_id = u.param_id where u.hardware_id = $1;", req.HarwareId)
 	if err != nil {
 		log.Fatalf("Я снова еблан забыл переделать логи %v\n", err)
+		return nil, err
 	}
 
 	var ret []*pr.HardwareParams
@@ -35,6 +37,7 @@ func (ApiServ) GetHardwareValue(cont context.Context, req *pr.HardwareRequest) (
 		err := rows.Scan(&r.ParamName, &r.ParamValue)
 		if err != nil {
 			log.Fatal("Кто еблан забывший переделать логи?")
+			return nil, err
 		}
 		ret = append(ret, &r)
 
@@ -49,12 +52,14 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		log.Fatalf("Я еблан забыл переделать логи: %v\n", err)
+		return nil, err
 	}
 	//Скорее всего можно сделать лучше, но пока и так сойдёт
 	for _, val := range req.Params {
-		_, err := dbPool.Exec(context.Background(), "UPDATE public.hardware SET current_value=$1 WHERE hardware_id = $2 and param_id = $3;", val.ParamValue, req.HardwareId, val.ParamId)
+		_, err := dbPool.Exec(context.Background(), "UPDATE public.params SET p.current_value=$1 from public.params p join public.unit u on  p.param_id = u.param_id  join public.hardware h on h.hardware_id = u.hardware_id  WHERE h.hardware_id = $2 and p.param_id = $3;", val.ParamValue, req.HardwareId, val.ParamId)
 		if err != nil {
 			log.Fatal("Я снова еблан забыл переделать логи")
+			return nil, err
 		}
 	}
 
