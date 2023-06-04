@@ -17,6 +17,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Print("Starting server")
 	go func() {
 		if err := s.Serve(l); err != nil {
 			log.Fatal(err)
