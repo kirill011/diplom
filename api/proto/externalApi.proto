@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+
+package api;
+
+option go_package = "api/proto";
+
+service api {
+    //Метод позволяет получить список с параметрами 
+    //и их значением для необходимого оборудования.
+    rpc Get_hardware_value (HardwareRequest) returns (HardwareResponse){};
+
+    //Метод позволяет менять параметры оборудования. 
+    //Неуказанные параметры остаются неизменными.
+    rpc Update_param_value(UpdateRequest) returns (UpdateResponse){};
+
+    //Метод позволяет зарегистрировать нового пользователя.
+    rpc Registration(RegistrationRequest) returns (RegistrationResponse){};
+}
+
+message HardwareRequest{
+    int32 HarwareId = 1;
+    string Token = 2;
+}
+
+message HardwareParams{
+    string ParamName = 1;
+    float ParamValue = 2;
+}
+
+message HardwareResponse {
+    string MessageId = 1;
+    repeated HardwareParams Params = 2; 
+}
+
+message UpdateParams{
+    int32 ParamId = 1;
+    float ParamValue = 2;
+}
+
+message UpdateRequest{
+    int32 HardwareId = 1;
+    string Token = 2;
+    repeated UpdateParams Params = 3;
+}
+
+message UpdateResponse{
+    string MessageId = 1;
+    string ErrorCode = 2;
+}
+
+message RegistrationRequest{
+    string Login = 1;
+    string Password = 2;
+}
+
+message RegistrationResponse{
+    string MessageId = 1;
+    string ErrorCode = 2;
+}
