@@ -3,13 +3,16 @@ package serv
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"os"
 
 	pr "diplom/api/proto"
+	send "diplom/send"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	uuid "github.com/satori/go.uuid"
+	"google.golang.org/grpc"
 )
 
 // Server...
@@ -64,12 +67,27 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 		}
 	}
 
-	//Далее идёт передача на сериализатор, которого пока нет
-
+	conn, err := grpc.Dial(":50051", grpc.WithInsecure())
+	if err != nil {
+		log.Fatal(err)
+	}
+	client := send.NewUnaryClient(conn)
+	res, err := client.SendToClient(context.Background(), &send.Message{})
+	fmt.Println(res)
 	return &pr.UpdateResponse{MessageId: uuid.NewV4().String(), ErrorCode: "OK"}, nil
 }
 
-// TODO...
+// Функция регистрирует пользователя в системе
 func (ApiServ) Registration(ctx context.Context, req *pr.RegistrationRequest) (*pr.RegistrationResponse, error) {
-	return &pr.RegistrationResponse{}, nil
+	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	if err != nil {
+		log.Fatalf("Логи 4 %v\n", err)
+		return nil, errors.New("Ошибка подключения к БД")
+	}
+	_, err = dbPool.Exec(context.Background(), "INSERT INTO public.users(login, password, actual) VALUES($1, $2, true);", req.Login, req.Password)
+	if err != nil {
+		log.Fatal("Логи 5")
+		return nil, errors.New("Ошибка выполнения SQL запроса")
+	}
+	return &pr.RegistrationResponse{MessageId: uuid.NewV4().String(), ErrorCode: "OK"}, nil
 }
