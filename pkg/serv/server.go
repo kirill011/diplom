@@ -24,6 +24,7 @@ type ApiServ struct {
 func (ApiServ) GetHardwareValue(cont context.Context, req *pr.HardwareRequest) (*pr.HardwareResponse, error) {
 
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	fmt.Println(os.Getenv("DB"))
 	if err != nil {
 		log.Fatalf("Логи 1: %v\n", err)
 		return nil, errors.New("Ошибка подключения к БД")

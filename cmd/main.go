@@ -14,7 +14,7 @@ func main() {
 	s := grpc.NewServer()
 	api.RegisterApiServer(s, &serv.ApiServ{})
 
-	l, err := net.Listen("tcp", "77.222.42.182:8080")
+	l, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		log.Fatal(err)
 	}
