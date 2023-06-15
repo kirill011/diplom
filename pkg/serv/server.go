@@ -67,7 +67,7 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 		}
 	}
 
-	conn, err := grpc.Dial(":50051", grpc.WithInsecure())
+	conn, err := grpc.Dial("77.222.42.182:50051", grpc.WithInsecure())
 	if err != nil {
 		log.Fatal(err)
 	}
