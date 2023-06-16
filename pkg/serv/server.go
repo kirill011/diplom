@@ -75,7 +75,7 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 		return nil, errors.New("Error reading result of SQL query")
 	}
 	client := send.NewUnaryClient(conn)
-	res, err := client.SendToClient(context.Background(), &send.Message{Value: 10.3})
+	res, err := client.SendToClient(context.Background(), &send.Message{Host: "Jopa"})
 	if err != nil {
 		log.Fatalf("Логи 7 %v\n", err)
 		return nil, errors.New("Function SendToClient error")
