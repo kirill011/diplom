@@ -3,25 +3,28 @@ package main
 import (
 	api "diplom/api/proto"
 	serv "diplom/pkg/serv"
-	"fmt"
 	"log"
 	"net"
+	"os"
 
 	"google.golang.org/grpc"
 )
 
 func main() {
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+
 	s := grpc.NewServer()
 	api.RegisterApiServer(s, &serv.ApiServ{})
 
 	l, err := net.Listen("tcp", ":8080")
 	if err != nil {
-		log.Fatal(err)
+		errorLog.Fatalf("Server: %v\n", err)
 	}
-	fmt.Print("Starting server")
+	infoLog.Print("Server: server starting")
 	go func() {
 		if err := s.Serve(l); err != nil {
-			log.Fatal(err)
+			errorLog.Fatalf("Server: %v\n", err)
 		}
 	}()
 	select {}

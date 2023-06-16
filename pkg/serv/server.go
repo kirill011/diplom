@@ -48,7 +48,7 @@ func (ApiServ) GetHardwareValue(cont context.Context, req *pr.HardwareRequest) (
 		ret = append(ret, &r)
 
 	}
-	infoLog.Print("GetHardwareValue: request succes")
+	infoLog.Print("GetHardwareValue: request successful")
 	return &pr.HardwareResponse{MessageId: uuid.NewV4().String(), Params: ret}, nil
 }
 
@@ -85,7 +85,7 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 	//
 	fmt.Println(res)
 	//
-	infoLog.Print("UpdateParamValue: request succes")
+	infoLog.Print("UpdateParamValue: request successful")
 	return &pr.UpdateResponse{MessageId: uuid.NewV4().String(), ErrorCode: "OK"}, nil
 }
 
@@ -103,6 +103,6 @@ func (ApiServ) Registration(ctx context.Context, req *pr.RegistrationRequest) (*
 		errorLog.Printf("Registration: %v\n", err)
 		return nil, errors.New("SQL query execution error")
 	}
-	infoLog.Print("Registration: request succes")
+	infoLog.Print("Registration: request successful")
 	return &pr.RegistrationResponse{MessageId: uuid.NewV4().String(), ErrorCode: "OK"}, nil
 }
