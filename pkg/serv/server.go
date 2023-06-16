@@ -69,7 +69,7 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 		}
 	}*/
 
-	conn, err := grpc.Dial("77.222.42.182:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("127.0.0.1:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("Логи 6 %v\n", err)
 		return nil, errors.New("Error reading result of SQL query")
