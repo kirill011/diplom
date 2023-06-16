@@ -25,8 +25,8 @@ func main() {
 		errorLog.Fatalf("Client: %v\n", err)
 	}
 	fmt.Println(res.Params)
-	res2, err := client.UpdateParamValue(context.Background(), &api.UpdateRequest{HardwareId: 1, Token: "", Params: []*api.UpdateParams{
-		&api.UpdateParams{ParamId: 1, ParamValue: 1},
-	}})
+	req := &api.UpdateRequest{HardwareId: 1, Token: "", Params: []*api.UpdateParams{
+		&api.UpdateParams{ParamId: 1, ParamValue: 1}}}
+	res2, err := client.UpdateParamValue(context.Background(), req)
 	fmt.Println(res2)
 }

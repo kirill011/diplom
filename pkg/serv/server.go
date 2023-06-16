@@ -2,14 +2,13 @@ package serv
 
 import (
 	"context"
-	b64 "encoding/base64"
-	"errors"
-	"fmt"
-	"log"
-	"os"
-
 	pr "diplom/api/proto"
 	send "diplom/send"
+	b64 "encoding/base64"
+	"errors"
+	"log"
+	"os"
+	"strconv"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	uuid "github.com/satori/go.uuid"
@@ -49,8 +48,9 @@ func (ApiServ) GetHardwareValue(cont context.Context, req *pr.HardwareRequest) (
 		ret = append(ret, &r)
 
 	}
-	infoLog.Print("GetHardwareValue: request successful")
-	return &pr.HardwareResponse{MessageId: uuid.NewV4().String(), Params: ret}, nil
+	responce := &pr.HardwareResponse{MessageId: uuid.NewV4().String(), Params: ret}
+	infoLog.Printf("GetHardwareValue: request successful. Responce: %v\n", responce)
+	return responce, nil
 }
 
 // Обновление базы и пересылка на сериализатор
@@ -63,14 +63,6 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 		errorLog.Printf("UpdateParamValue: %v\n", err)
 		return nil, errors.New("Unable to connect to database")
 	}
-	//Добавить проверку
-	for _, val := range req.Params {
-		_, err := dbPool.Exec(context.Background(), "UPDATE public.params SET current_value=$1 from public.params p join public.unit u on  p.param_id = u.param_id  join public.hardware h on h.hardware_id = u.hardware_id  WHERE h.hardware_id = $2 and p.param_id = $3;", val.ParamValue, req.HardwareId, val.ParamId)
-		if err != nil {
-			errorLog.Printf("UpdateParamValue: %v\n", err)
-			return nil, errors.New("SQL query execution error")
-		}
-	}
 
 	conn, err := grpc.Dial("127.0.0.1:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -78,16 +70,25 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 		return nil, errors.New("Error reading result of SQL query")
 	}
 	client := send.NewUnaryClient(conn)
-	res, err := client.SendToClient(context.Background(), &send.Message{Host: "Jopa", HardId: 1, ComandId: 1, Value: 10.1, MessageId: uuid.NewV4().String()})
-	if err != nil {
-		errorLog.Printf("UpdateParamValue: %v\n", err)
-		return nil, errors.New("Function SendToClient error")
+	var ret *send.MessageResponse
+	for _, val := range req.Params {
+		parVal := strconv.FormatFloat(float64(val.ParamValue), 'f', -1, 32)
+		_, err := dbPool.Exec(context.Background(), "UPDATE public.params SET current_value=$1 from public.params p join public.unit u on  p.param_id = u.param_id  join public.hardware h on h.hardware_id = u.hardware_id  WHERE h.hardware_id = $2 and p.param_id = $3;", parVal, req.HardwareId, val.ParamId)
+		if err != nil {
+			errorLog.Printf("UpdateParamValue: %v\n", err)
+			return nil, errors.New("SQL query execution error")
+		}
+		res, err := client.SendToClient(context.Background(), &send.Message{Host: "Jopa", HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: uuid.NewV4().String()})
+		if err != nil {
+			errorLog.Printf("UpdateParamValue: %v\n", err)
+			return nil, errors.New("Function SendToClient error")
+		}
+		ret = res
 	}
-	//
-	fmt.Println(res)
-	//
-	infoLog.Print("UpdateParamValue: request successful")
-	return &pr.UpdateResponse{MessageId: uuid.NewV4().String(), ErrorCode: "OK"}, nil
+
+	responce := &pr.UpdateResponse{MessageId: uuid.NewV4().String(), ErrorCode: ret.ErrorCode}
+	infoLog.Printf("UpdateParamValue: request successful. Responce: %v\n", responce)
+	return responce, nil
 }
 
 // Функция регистрирует пользователя в системе
@@ -104,6 +105,7 @@ func (ApiServ) Registration(ctx context.Context, req *pr.RegistrationRequest) (*
 		errorLog.Printf("Registration: %v\n", err)
 		return nil, errors.New("SQL query execution error")
 	}
-	infoLog.Print("Registration: request successful")
-	return &pr.RegistrationResponse{MessageId: uuid.NewV4().String(), ErrorCode: "OK"}, nil
+	responce := &pr.RegistrationResponse{MessageId: uuid.NewV4().String(), ErrorCode: "OK"}
+	infoLog.Printf("Registration: request successful. Responce: %v\n", responce)
+	return responce, nil
 }
