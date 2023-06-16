@@ -2,6 +2,7 @@ package serv
 
 import (
 	"context"
+	b64 "encoding/base64"
 	"errors"
 	"fmt"
 	"log"
@@ -57,7 +58,7 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
-	/*dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("UpdateParamValue: %v\n", err)
 		return nil, errors.New("Unable to connect to database")
@@ -69,7 +70,7 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 			errorLog.Printf("UpdateParamValue: %v\n", err)
 			return nil, errors.New("SQL query execution error")
 		}
-	}*/
+	}
 
 	conn, err := grpc.Dial("127.0.0.1:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -98,7 +99,7 @@ func (ApiServ) Registration(ctx context.Context, req *pr.RegistrationRequest) (*
 		errorLog.Printf("Registration: %v\n", err)
 		return nil, errors.New("Unable to connect to database")
 	}
-	_, err = dbPool.Exec(context.Background(), "INSERT INTO public.users(login, password, actual) VALUES($1, $2, true);", req.Login, req.Password)
+	_, err = dbPool.Exec(context.Background(), "INSERT INTO public.users(login, password, actual, token) VALUES($1, $2, true, $3);", req.Login, req.Password, b64.StdEncoding.EncodeToString([]byte(req.Login+":"+req.Password)))
 	if err != nil {
 		errorLog.Printf("Registration: %v\n", err)
 		return nil, errors.New("SQL query execution error")
