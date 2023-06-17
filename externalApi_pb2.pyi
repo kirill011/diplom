@@ -29,6 +29,18 @@ class HardwareResponse(_message.Message):
     Params: _containers.RepeatedCompositeFieldContainer[HardwareParams]
     def __init__(self, MessageId: _Optional[str] = ..., Params: _Optional[_Iterable[_Union[HardwareParams, _Mapping]]] = ...) -> None: ...
 
+class RegistrationHardwareRequest(_message.Message):
+    __slots__ = ["HardName", "Ip", "Params", "Token"]
+    HARDNAME_FIELD_NUMBER: _ClassVar[int]
+    HardName: str
+    IP_FIELD_NUMBER: _ClassVar[int]
+    Ip: str
+    PARAMS_FIELD_NUMBER: _ClassVar[int]
+    Params: _containers.RepeatedCompositeFieldContainer[HardwareParams]
+    TOKEN_FIELD_NUMBER: _ClassVar[int]
+    Token: str
+    def __init__(self, HardName: _Optional[str] = ..., Ip: _Optional[str] = ..., Token: _Optional[str] = ..., Params: _Optional[_Iterable[_Union[HardwareParams, _Mapping]]] = ...) -> None: ...
+
 class RegistrationRequest(_message.Message):
     __slots__ = ["Login", "Password"]
     LOGIN_FIELD_NUMBER: _ClassVar[int]

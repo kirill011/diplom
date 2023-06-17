@@ -19,9 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Api_GetHardwareValue_FullMethodName = "/api.api/Get_hardware_value"
-	Api_UpdateParamValue_FullMethodName = "/api.api/Update_param_value"
-	Api_Registration_FullMethodName     = "/api.api/Registration"
+	Api_GetHardwareValue_FullMethodName     = "/api.api/Get_hardware_value"
+	Api_UpdateParamValue_FullMethodName     = "/api.api/Update_param_value"
+	Api_Registration_FullMethodName         = "/api.api/Registration"
+	Api_RegistrationHardware_FullMethodName = "/api.api/Registration_hardware"
 )
 
 // ApiClient is the client API for Api service.
@@ -36,6 +37,8 @@ type ApiClient interface {
 	UpdateParamValue(ctx context.Context, in *UpdateRequest, opts ...grpc.CallOption) (*UpdateResponse, error)
 	// Метод позволяет зарегистрировать нового пользователя.
 	Registration(ctx context.Context, in *RegistrationRequest, opts ...grpc.CallOption) (*RegistrationResponse, error)
+	// Метод позволяет зарегистрировать оборудование пользователя
+	RegistrationHardware(ctx context.Context, in *RegistrationHardwareRequest, opts ...grpc.CallOption) (*RegistrationResponse, error)
 }
 
 type apiClient struct {
@@ -73,6 +76,15 @@ func (c *apiClient) Registration(ctx context.Context, in *RegistrationRequest, o
 	return out, nil
 }
 
+func (c *apiClient) RegistrationHardware(ctx context.Context, in *RegistrationHardwareRequest, opts ...grpc.CallOption) (*RegistrationResponse, error) {
+	out := new(RegistrationResponse)
+	err := c.cc.Invoke(ctx, Api_RegistrationHardware_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ApiServer is the server API for Api service.
 // All implementations must embed UnimplementedApiServer
 // for forward compatibility
@@ -85,6 +97,8 @@ type ApiServer interface {
 	UpdateParamValue(context.Context, *UpdateRequest) (*UpdateResponse, error)
 	// Метод позволяет зарегистрировать нового пользователя.
 	Registration(context.Context, *RegistrationRequest) (*RegistrationResponse, error)
+	// Метод позволяет зарегистрировать оборудование пользователя
+	RegistrationHardware(context.Context, *RegistrationHardwareRequest) (*RegistrationResponse, error)
 	mustEmbedUnimplementedApiServer()
 }
 
@@ -100,6 +114,9 @@ func (UnimplementedApiServer) UpdateParamValue(context.Context, *UpdateRequest) 
 }
 func (UnimplementedApiServer) Registration(context.Context, *RegistrationRequest) (*RegistrationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Registration not implemented")
+}
+func (UnimplementedApiServer) RegistrationHardware(context.Context, *RegistrationHardwareRequest) (*RegistrationResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegistrationHardware not implemented")
 }
 func (UnimplementedApiServer) mustEmbedUnimplementedApiServer() {}
 
@@ -168,6 +185,24 @@ func _Api_Registration_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Api_RegistrationHardware_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegistrationHardwareRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ApiServer).RegistrationHardware(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Api_RegistrationHardware_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ApiServer).RegistrationHardware(ctx, req.(*RegistrationHardwareRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Api_ServiceDesc is the grpc.ServiceDesc for Api service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -186,6 +221,10 @@ var Api_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Registration",
 			Handler:    _Api_Registration_Handler,
+		},
+		{
+			MethodName: "Registration_hardware",
+			Handler:    _Api_RegistrationHardware_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

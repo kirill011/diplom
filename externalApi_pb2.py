@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11\x65xternalApi.proto\x12\x03\x61pi\"3\n\x0fHardwareRequest\x12\x11\n\tHarwareId\x18\x01 \x01(\x05\x12\r\n\x05Token\x18\x02 \x01(\t\"7\n\x0eHardwareParams\x12\x11\n\tParamName\x18\x01 \x01(\t\x12\x12\n\nParamValue\x18\x02 \x01(\x02\"J\n\x10HardwareResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12#\n\x06Params\x18\x02 \x03(\x0b\x32\x13.api.HardwareParams\"3\n\x0cUpdateParams\x12\x0f\n\x07ParamId\x18\x01 \x01(\x05\x12\x12\n\nParamValue\x18\x02 \x01(\x02\"U\n\rUpdateRequest\x12\x12\n\nHardwareId\x18\x01 \x01(\x05\x12\r\n\x05Token\x18\x02 \x01(\t\x12!\n\x06Params\x18\x03 \x03(\x0b\x32\x11.api.UpdateParams\"6\n\x0eUpdateResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x11\n\tErrorCode\x18\x02 \x01(\t\"6\n\x13RegistrationRequest\x12\r\n\x05Login\x18\x01 \x01(\t\x12\x10\n\x08Password\x18\x02 \x01(\t\"<\n\x14RegistrationResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x11\n\tErrorCode\x18\x02 \x01(\t2\xd2\x01\n\x03\x61pi\x12\x43\n\x12Get_hardware_value\x12\x14.api.HardwareRequest\x1a\x15.api.HardwareResponse\"\x00\x12?\n\x12Update_param_value\x12\x12.api.UpdateRequest\x1a\x13.api.UpdateResponse\"\x00\x12\x45\n\x0cRegistration\x12\x18.api.RegistrationRequest\x1a\x19.api.RegistrationResponse\"\x00\x42\x0bZ\tapi/protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11\x65xternalApi.proto\x12\x03\x61pi\"3\n\x0fHardwareRequest\x12\x11\n\tHarwareId\x18\x01 \x01(\x05\x12\r\n\x05Token\x18\x02 \x01(\t\"7\n\x0eHardwareParams\x12\x11\n\tParamName\x18\x01 \x01(\t\x12\x12\n\nParamValue\x18\x02 \x01(\x02\"J\n\x10HardwareResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12#\n\x06Params\x18\x02 \x03(\x0b\x32\x13.api.HardwareParams\"3\n\x0cUpdateParams\x12\x0f\n\x07ParamId\x18\x01 \x01(\x05\x12\x12\n\nParamValue\x18\x02 \x01(\x02\"U\n\rUpdateRequest\x12\x12\n\nHardwareId\x18\x01 \x01(\x05\x12\r\n\x05Token\x18\x02 \x01(\t\x12!\n\x06Params\x18\x03 \x03(\x0b\x32\x11.api.UpdateParams\"6\n\x0eUpdateResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x11\n\tErrorCode\x18\x02 \x01(\t\"6\n\x13RegistrationRequest\x12\r\n\x05Login\x18\x01 \x01(\t\x12\x10\n\x08Password\x18\x02 \x01(\t\"<\n\x14RegistrationResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x11\n\tErrorCode\x18\x02 \x01(\t\"o\n\x1bRegistrationHardwareRequest\x12\x10\n\x08HardName\x18\x01 \x01(\t\x12\n\n\x02Ip\x18\x02 \x01(\t\x12\r\n\x05Token\x18\x03 \x01(\t\x12#\n\x06Params\x18\x04 \x03(\x0b\x32\x13.api.HardwareParams2\xaa\x02\n\x03\x61pi\x12\x43\n\x12Get_hardware_value\x12\x14.api.HardwareRequest\x1a\x15.api.HardwareResponse\"\x00\x12?\n\x12Update_param_value\x12\x12.api.UpdateRequest\x1a\x13.api.UpdateResponse\"\x00\x12\x45\n\x0cRegistration\x12\x18.api.RegistrationRequest\x1a\x19.api.RegistrationResponse\"\x00\x12V\n\x15Registration_hardware\x12 .api.RegistrationHardwareRequest\x1a\x19.api.RegistrationResponse\"\x00\x42\x0bZ\tapi/protob\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'externalApi_pb2', globals())
@@ -37,6 +37,8 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _REGISTRATIONREQUEST._serialized_end=462
   _REGISTRATIONRESPONSE._serialized_start=464
   _REGISTRATIONRESPONSE._serialized_end=524
-  _API._serialized_start=527
-  _API._serialized_end=737
+  _REGISTRATIONHARDWAREREQUEST._serialized_start=526
+  _REGISTRATIONHARDWAREREQUEST._serialized_end=637
+  _API._serialized_start=640
+  _API._serialized_end=938
 # @@protoc_insertion_point(module_scope)

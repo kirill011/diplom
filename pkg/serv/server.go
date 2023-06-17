@@ -8,7 +8,6 @@ import (
 	"errors"
 	"log"
 	"os"
-	"strconv"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	uuid "github.com/satori/go.uuid"
@@ -58,6 +57,7 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	MessageId := uuid.NewV4().String()
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("UpdateParamValue: %v\n", err)
@@ -72,13 +72,12 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 	client := send.NewUnaryClient(conn)
 	var ret *send.MessageResponse
 	for _, val := range req.Params {
-		parVal := strconv.FormatFloat(float64(val.ParamValue), 'f', -1, 32)
-		_, err := dbPool.Exec(context.Background(), "UPDATE public.params SET current_value=$1 from public.params p join public.unit u on  p.param_id = u.param_id  join public.hardware h on h.hardware_id = u.hardware_id  WHERE h.hardware_id = $2 and p.param_id = $3;", parVal, req.HardwareId, val.ParamId)
+		_, err := dbPool.Exec(context.Background(), "UPDATE public.params SET current_value=$1 from public.params p join public.unit u on  p.param_id = u.param_id  join public.hardware h on h.hardware_id = u.hardware_id  WHERE h.hardware_id = $2 and p.param_id = $3;", val.ParamValue, req.HardwareId, val.ParamId)
 		if err != nil {
 			errorLog.Printf("UpdateParamValue: %v\n", err)
 			return nil, errors.New("SQL query execution error")
 		}
-		res, err := client.SendToClient(context.Background(), &send.Message{Host: "Jopa", HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: uuid.NewV4().String()})
+		res, err := client.SendToClient(context.Background(), &send.Message{Host: "Jopa", HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: MessageId})
 		if err != nil {
 			errorLog.Printf("UpdateParamValue: %v\n", err)
 			return nil, errors.New("Function SendToClient error")
@@ -86,7 +85,7 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 		ret = res
 	}
 
-	responce := &pr.UpdateResponse{MessageId: uuid.NewV4().String(), ErrorCode: ret.ErrorCode}
+	responce := &pr.UpdateResponse{MessageId: MessageId, ErrorCode: ret.ErrorCode}
 	infoLog.Printf("UpdateParamValue: request successful. Responce: %v\n", responce)
 	return responce, nil
 }
@@ -107,5 +106,73 @@ func (ApiServ) Registration(ctx context.Context, req *pr.RegistrationRequest) (*
 	}
 	responce := &pr.RegistrationResponse{MessageId: uuid.NewV4().String(), ErrorCode: "OK"}
 	infoLog.Printf("Registration: request successful. Responce: %v\n", responce)
+	return responce, nil
+}
+
+// Функция для регистрации оборудования
+func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHardwareRequest) (*pr.RegistrationResponse, error) {
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	if err != nil {
+		errorLog.Printf("RegistrationHardware: %v\n", err)
+		return nil, errors.New("Unable to connect to database")
+	}
+	rows, err := dbPool.Query(context.Background(), "select user_id from public.users where token = $1;", req.Token)
+	if err != nil {
+		errorLog.Printf("RegistrationHardware: %v\n", err)
+		return nil, errors.New("SQL query select execution error")
+	}
+
+	counter := 0
+	var userId int
+	var hardId int
+	for rows.Next() {
+		counter++
+		if counter > 1 {
+			errorLog.Printf("RegistrationHardware: %v\n", errors.New("Multiple users have the same token"))
+			return nil, errors.New("Multiple users have the same token")
+		}
+		hardRows, err := dbPool.Query(context.Background(), "INSERT INTO public.hardware(hard_name, ip) VALUES($1, $2) returning hardware_id", req.HardName, req.Ip)
+		if err != nil {
+			errorLog.Printf("RegistrationHardware: %v\n", err)
+			return nil, errors.New("SQL query insert execution error")
+		}
+		hardRows.Next()
+		err = hardRows.Scan(&hardId)
+		if err != nil {
+			errorLog.Printf("RegistrationHardware: %v\n", err)
+			return nil, errors.New("Error reading result of SQL query")
+		}
+		err = rows.Scan(&userId)
+		if err != nil {
+			errorLog.Printf("RegistrationHardware: %v\n", err)
+			return nil, errors.New("Error reading result of SQL query")
+		}
+	}
+
+	for _, val := range req.Params {
+		var paramId int
+		ParamRows, err := dbPool.Query(context.Background(), "INSERT INTO public.params(param_name, current_value) VALUES($1, $2) returning param_id", val.ParamName, val.ParamValue)
+		if err != nil {
+			errorLog.Printf("RegistrationHardware: %v\n", err)
+			return nil, errors.New("SQL query insert execution error")
+		}
+		ParamRows.Next()
+		err = ParamRows.Scan(&paramId)
+		if err != nil {
+			errorLog.Printf("RegistrationHardware: %v\n", err)
+			return nil, errors.New("Error reading result of SQL query")
+		}
+
+		_, err = dbPool.Exec(context.Background(), "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES($1, $2, $3);", userId, hardId, paramId)
+		if err != nil {
+			errorLog.Printf("RegistrationHardware: %v\n", err)
+			return nil, errors.New("SQL query insert execution error")
+		}
+	}
+
+	responce := &pr.RegistrationResponse{MessageId: uuid.NewV4().String(), ErrorCode: "OK"}
+	infoLog.Printf("RegistrationHardware: request successful. Responce: %v\n", responce)
 	return responce, nil
 }

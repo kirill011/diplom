@@ -29,6 +29,11 @@ class apiStub(object):
                 request_serializer=externalApi__pb2.RegistrationRequest.SerializeToString,
                 response_deserializer=externalApi__pb2.RegistrationResponse.FromString,
                 )
+        self.Registration_hardware = channel.unary_unary(
+                '/api.api/Registration_hardware',
+                request_serializer=externalApi__pb2.RegistrationHardwareRequest.SerializeToString,
+                response_deserializer=externalApi__pb2.RegistrationResponse.FromString,
+                )
 
 
 class apiServicer(object):
@@ -57,6 +62,13 @@ class apiServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Registration_hardware(self, request, context):
+        """Метод позволяет зарегистрировать оборудование пользователя
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_apiServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -73,6 +85,11 @@ def add_apiServicer_to_server(servicer, server):
             'Registration': grpc.unary_unary_rpc_method_handler(
                     servicer.Registration,
                     request_deserializer=externalApi__pb2.RegistrationRequest.FromString,
+                    response_serializer=externalApi__pb2.RegistrationResponse.SerializeToString,
+            ),
+            'Registration_hardware': grpc.unary_unary_rpc_method_handler(
+                    servicer.Registration_hardware,
+                    request_deserializer=externalApi__pb2.RegistrationHardwareRequest.FromString,
                     response_serializer=externalApi__pb2.RegistrationResponse.SerializeToString,
             ),
     }
@@ -132,6 +149,23 @@ class api(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/api.api/Registration',
             externalApi__pb2.RegistrationRequest.SerializeToString,
+            externalApi__pb2.RegistrationResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Registration_hardware(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/api.api/Registration_hardware',
+            externalApi__pb2.RegistrationHardwareRequest.SerializeToString,
             externalApi__pb2.RegistrationResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

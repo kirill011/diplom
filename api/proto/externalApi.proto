@@ -16,6 +16,9 @@ service api {
 
     //Метод позволяет зарегистрировать нового пользователя.
     rpc Registration(RegistrationRequest) returns (RegistrationResponse){};
+
+    //Метод позволяет зарегистрировать оборудование пользователя
+    rpc Registration_hardware(RegistrationHardwareRequest) returns (RegistrationResponse){};
 }
 
 message HardwareRequest{
@@ -57,4 +60,11 @@ message RegistrationRequest{
 message RegistrationResponse{
     string MessageId = 1;
     string ErrorCode = 2;
+}
+
+message RegistrationHardwareRequest{
+    string HardName = 1;
+    string Ip = 2;
+    string Token = 3;
+    repeated HardwareParams Params = 4;
 }
