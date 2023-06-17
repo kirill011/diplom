@@ -19,6 +19,12 @@ service api {
 
     //Метод позволяет зарегистрировать оборудование пользователя
     rpc Registration_hardware(RegistrationHardwareRequest) returns (RegistrationResponse){};
+
+    //Метод позволяет получить все id оборудования пользователя
+    rpc Get_hardware_id(HardwareIdRequest) returns (HardwereIdResponce){};
+
+    //Метод позволяет получить все id параметров выбранного оборудования
+    rpc Get_param_id(ParamIdRequest) returns (ParamIdResponce){};
 }
 
 message HardwareRequest{
@@ -67,4 +73,33 @@ message RegistrationHardwareRequest{
     string Ip = 2;
     string Token = 3;
     repeated HardwareParams Params = 4;
+}
+
+message HardwareIdRequest{
+    string Token = 1;
+}
+
+message HardwereIdResponce{
+    string MessageId = 1;
+    repeated HardwareIdAll Rows = 2;
+}
+
+message HardwareIdAll{
+    string HardwareName = 1;
+    int32 HardwareId = 2;
+}
+
+message ParamIdRequest{
+    string Token = 1;
+    int32 HardwareId = 2;
+}
+
+message ParamIdResponce{
+    string MessageId = 1;
+    repeated ParamIdAll Rows = 2;
+}
+
+message ParamIdAll{
+    string ParamName = 1;
+    int32 ParamId = 2;
 }

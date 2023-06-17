@@ -176,3 +176,64 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 	infoLog.Printf("RegistrationHardware: request successful. Responce: %v\n", responce)
 	return responce, nil
 }
+
+func (ApiServ) GetHardwareId(ctx context.Context, req *pr.HardwareIdRequest) (*pr.HardwereIdResponce, error) {
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	if err != nil {
+		errorLog.Printf("GetHardwareId: %v\n", err)
+		return nil, errors.New("Unable to connect to database")
+	}
+	rows, err := dbPool.Query(context.Background(), "select h.hard_name, h.hardware_id from public.hardware h join unit u on u.hardware_id = h.hardware_id join public.users us on us.user_id = u.user_id where us.token = $1;", req.Token)
+	if err != nil {
+		errorLog.Printf("GetHardwareId: %v\n", err)
+		return nil, errors.New("SQL query select execution error")
+	}
+
+	var ret []*pr.HardwareIdAll
+	for rows.Next() {
+		var r pr.HardwareIdAll
+		err := rows.Scan(&r.HardwareName, &r.HardwareId)
+		if err != nil {
+			errorLog.Printf("GetHardwareId: %v\n", err)
+			return nil, errors.New("Error reading result of SQL query")
+		}
+		ret = append(ret, &r)
+
+	}
+	responce := &pr.HardwereIdResponce{MessageId: uuid.NewV4().String(), Rows: ret}
+	infoLog.Printf("GetHardwareId: request successful. Responce: %v\n", responce)
+	return responce, nil
+
+}
+
+func (ApiServ) GetParamId(ctx context.Context, req *pr.ParamIdRequest) (*pr.ParamIdResponce, error) {
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	if err != nil {
+		errorLog.Printf("GetParamId: %v\n", err)
+		return nil, errors.New("Unable to connect to database")
+	}
+	rows, err := dbPool.Query(context.Background(), "select p.param_name, p.param_id from public.params p join unit u on u.p.param_id = p.param_id join public.users us on us.user_id = u.user_id join public.hardware u on u.hardware_id = h.hardware_id where us.token = $1 and h.hardware_id = $2;", req.Token, req.HardwareId)
+	if err != nil {
+		errorLog.Printf("GetParamId: %v\n", err)
+		return nil, errors.New("SQL query select execution error")
+	}
+
+	var ret []*pr.ParamIdAll
+	for rows.Next() {
+		var r pr.ParamIdAll
+		err := rows.Scan(&r.ParamName, &r.ParamId)
+		if err != nil {
+			errorLog.Printf("GetParamId: %v\n", err)
+			return nil, errors.New("Error reading result of SQL query")
+		}
+		ret = append(ret, &r)
+
+	}
+	responce := &pr.ParamIdResponce{MessageId: uuid.NewV4().String(), Rows: ret}
+	infoLog.Printf("GetParamId: request successful. Responce: %v\n", responce)
+	return responce, nil
+}

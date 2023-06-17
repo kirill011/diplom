@@ -5,6 +5,20 @@ from typing import ClassVar as _ClassVar, Iterable as _Iterable, Mapping as _Map
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
+class HardwareIdAll(_message.Message):
+    __slots__ = ["HardwareId", "HardwareName"]
+    HARDWAREID_FIELD_NUMBER: _ClassVar[int]
+    HARDWARENAME_FIELD_NUMBER: _ClassVar[int]
+    HardwareId: int
+    HardwareName: str
+    def __init__(self, HardwareName: _Optional[str] = ..., HardwareId: _Optional[int] = ...) -> None: ...
+
+class HardwareIdRequest(_message.Message):
+    __slots__ = ["Token"]
+    TOKEN_FIELD_NUMBER: _ClassVar[int]
+    Token: str
+    def __init__(self, Token: _Optional[str] = ...) -> None: ...
+
 class HardwareParams(_message.Message):
     __slots__ = ["ParamName", "ParamValue"]
     PARAMNAME_FIELD_NUMBER: _ClassVar[int]
@@ -28,6 +42,38 @@ class HardwareResponse(_message.Message):
     PARAMS_FIELD_NUMBER: _ClassVar[int]
     Params: _containers.RepeatedCompositeFieldContainer[HardwareParams]
     def __init__(self, MessageId: _Optional[str] = ..., Params: _Optional[_Iterable[_Union[HardwareParams, _Mapping]]] = ...) -> None: ...
+
+class HardwereIdResponce(_message.Message):
+    __slots__ = ["MessageId", "Rows"]
+    MESSAGEID_FIELD_NUMBER: _ClassVar[int]
+    MessageId: str
+    ROWS_FIELD_NUMBER: _ClassVar[int]
+    Rows: _containers.RepeatedCompositeFieldContainer[HardwareIdAll]
+    def __init__(self, MessageId: _Optional[str] = ..., Rows: _Optional[_Iterable[_Union[HardwareIdAll, _Mapping]]] = ...) -> None: ...
+
+class ParamIdAll(_message.Message):
+    __slots__ = ["ParamId", "ParamName"]
+    PARAMID_FIELD_NUMBER: _ClassVar[int]
+    PARAMNAME_FIELD_NUMBER: _ClassVar[int]
+    ParamId: int
+    ParamName: str
+    def __init__(self, ParamName: _Optional[str] = ..., ParamId: _Optional[int] = ...) -> None: ...
+
+class ParamIdRequest(_message.Message):
+    __slots__ = ["HardwareId", "Token"]
+    HARDWAREID_FIELD_NUMBER: _ClassVar[int]
+    HardwareId: int
+    TOKEN_FIELD_NUMBER: _ClassVar[int]
+    Token: str
+    def __init__(self, Token: _Optional[str] = ..., HardwareId: _Optional[int] = ...) -> None: ...
+
+class ParamIdResponce(_message.Message):
+    __slots__ = ["MessageId", "Rows"]
+    MESSAGEID_FIELD_NUMBER: _ClassVar[int]
+    MessageId: str
+    ROWS_FIELD_NUMBER: _ClassVar[int]
+    Rows: _containers.RepeatedCompositeFieldContainer[ParamIdAll]
+    def __init__(self, MessageId: _Optional[str] = ..., Rows: _Optional[_Iterable[_Union[ParamIdAll, _Mapping]]] = ...) -> None: ...
 
 class RegistrationHardwareRequest(_message.Message):
     __slots__ = ["HardName", "Ip", "Params", "Token"]

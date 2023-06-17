@@ -539,6 +539,328 @@ func (x *RegistrationHardwareRequest) GetParams() []*HardwareParams {
 	return nil
 }
 
+type HardwareIdRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Token string `protobuf:"bytes,1,opt,name=Token,proto3" json:"Token,omitempty"`
+}
+
+func (x *HardwareIdRequest) Reset() {
+	*x = HardwareIdRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_proto_externalApi_proto_msgTypes[9]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *HardwareIdRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HardwareIdRequest) ProtoMessage() {}
+
+func (x *HardwareIdRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_externalApi_proto_msgTypes[9]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HardwareIdRequest.ProtoReflect.Descriptor instead.
+func (*HardwareIdRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_externalApi_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *HardwareIdRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type HardwereIdResponce struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	MessageId string           `protobuf:"bytes,1,opt,name=MessageId,proto3" json:"MessageId,omitempty"`
+	Rows      []*HardwareIdAll `protobuf:"bytes,2,rep,name=Rows,proto3" json:"Rows,omitempty"`
+}
+
+func (x *HardwereIdResponce) Reset() {
+	*x = HardwereIdResponce{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_proto_externalApi_proto_msgTypes[10]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *HardwereIdResponce) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HardwereIdResponce) ProtoMessage() {}
+
+func (x *HardwereIdResponce) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_externalApi_proto_msgTypes[10]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HardwereIdResponce.ProtoReflect.Descriptor instead.
+func (*HardwereIdResponce) Descriptor() ([]byte, []int) {
+	return file_api_proto_externalApi_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *HardwereIdResponce) GetMessageId() string {
+	if x != nil {
+		return x.MessageId
+	}
+	return ""
+}
+
+func (x *HardwereIdResponce) GetRows() []*HardwareIdAll {
+	if x != nil {
+		return x.Rows
+	}
+	return nil
+}
+
+type HardwareIdAll struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	HardwareName string `protobuf:"bytes,1,opt,name=HardwareName,proto3" json:"HardwareName,omitempty"`
+	HardwareId   int32  `protobuf:"varint,2,opt,name=HardwareId,proto3" json:"HardwareId,omitempty"`
+}
+
+func (x *HardwareIdAll) Reset() {
+	*x = HardwareIdAll{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_proto_externalApi_proto_msgTypes[11]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *HardwareIdAll) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HardwareIdAll) ProtoMessage() {}
+
+func (x *HardwareIdAll) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_externalApi_proto_msgTypes[11]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HardwareIdAll.ProtoReflect.Descriptor instead.
+func (*HardwareIdAll) Descriptor() ([]byte, []int) {
+	return file_api_proto_externalApi_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *HardwareIdAll) GetHardwareName() string {
+	if x != nil {
+		return x.HardwareName
+	}
+	return ""
+}
+
+func (x *HardwareIdAll) GetHardwareId() int32 {
+	if x != nil {
+		return x.HardwareId
+	}
+	return 0
+}
+
+type ParamIdRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Token      string `protobuf:"bytes,1,opt,name=Token,proto3" json:"Token,omitempty"`
+	HardwareId int32  `protobuf:"varint,2,opt,name=HardwareId,proto3" json:"HardwareId,omitempty"`
+}
+
+func (x *ParamIdRequest) Reset() {
+	*x = ParamIdRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_proto_externalApi_proto_msgTypes[12]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ParamIdRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ParamIdRequest) ProtoMessage() {}
+
+func (x *ParamIdRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_externalApi_proto_msgTypes[12]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ParamIdRequest.ProtoReflect.Descriptor instead.
+func (*ParamIdRequest) Descriptor() ([]byte, []int) {
+	return file_api_proto_externalApi_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *ParamIdRequest) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *ParamIdRequest) GetHardwareId() int32 {
+	if x != nil {
+		return x.HardwareId
+	}
+	return 0
+}
+
+type ParamIdResponce struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	MessageId string        `protobuf:"bytes,1,opt,name=MessageId,proto3" json:"MessageId,omitempty"`
+	Rows      []*ParamIdAll `protobuf:"bytes,2,rep,name=Rows,proto3" json:"Rows,omitempty"`
+}
+
+func (x *ParamIdResponce) Reset() {
+	*x = ParamIdResponce{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_proto_externalApi_proto_msgTypes[13]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ParamIdResponce) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ParamIdResponce) ProtoMessage() {}
+
+func (x *ParamIdResponce) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_externalApi_proto_msgTypes[13]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ParamIdResponce.ProtoReflect.Descriptor instead.
+func (*ParamIdResponce) Descriptor() ([]byte, []int) {
+	return file_api_proto_externalApi_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ParamIdResponce) GetMessageId() string {
+	if x != nil {
+		return x.MessageId
+	}
+	return ""
+}
+
+func (x *ParamIdResponce) GetRows() []*ParamIdAll {
+	if x != nil {
+		return x.Rows
+	}
+	return nil
+}
+
+type ParamIdAll struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	ParamName string `protobuf:"bytes,1,opt,name=ParamName,proto3" json:"ParamName,omitempty"`
+	ParamId   int32  `protobuf:"varint,2,opt,name=ParamId,proto3" json:"ParamId,omitempty"`
+}
+
+func (x *ParamIdAll) Reset() {
+	*x = ParamIdAll{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_proto_externalApi_proto_msgTypes[14]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *ParamIdAll) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ParamIdAll) ProtoMessage() {}
+
+func (x *ParamIdAll) ProtoReflect() protoreflect.Message {
+	mi := &file_api_proto_externalApi_proto_msgTypes[14]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ParamIdAll.ProtoReflect.Descriptor instead.
+func (*ParamIdAll) Descriptor() ([]byte, []int) {
+	return file_api_proto_externalApi_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *ParamIdAll) GetParamName() string {
+	if x != nil {
+		return x.ParamName
+	}
+	return ""
+}
+
+func (x *ParamIdAll) GetParamId() int32 {
+	if x != nil {
+		return x.ParamId
+	}
+	return 0
+}
+
 var File_api_proto_externalApi_proto protoreflect.FileDescriptor
 
 var file_api_proto_externalApi_proto_rawDesc = []byte{
@@ -594,8 +916,36 @@ var file_api_proto_externalApi_proto_rawDesc = []byte{
 	0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x54, 0x6f, 0x6b, 0x65,
 	0x6e, 0x12, 0x2b, 0x0a, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x18, 0x04, 0x20, 0x03, 0x28,
 	0x0b, 0x32, 0x13, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x48, 0x61, 0x72, 0x64, 0x77, 0x61, 0x72, 0x65,
-	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x32, 0xaa,
-	0x02, 0x0a, 0x03, 0x61, 0x70, 0x69, 0x12, 0x43, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x5f, 0x68, 0x61,
+	0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x52, 0x06, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x73, 0x22, 0x29,
+	0x0a, 0x11, 0x48, 0x61, 0x72, 0x64, 0x77, 0x61, 0x72, 0x65, 0x49, 0x64, 0x52, 0x65, 0x71, 0x75,
+	0x65, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x05, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0x5a, 0x0a, 0x12, 0x48, 0x61, 0x72,
+	0x64, 0x77, 0x65, 0x72, 0x65, 0x49, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x63, 0x65, 0x12,
+	0x1c, 0x0a, 0x09, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x09, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x49, 0x64, 0x12, 0x26, 0x0a,
+	0x04, 0x52, 0x6f, 0x77, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x61, 0x70,
+	0x69, 0x2e, 0x48, 0x61, 0x72, 0x64, 0x77, 0x61, 0x72, 0x65, 0x49, 0x64, 0x41, 0x6c, 0x6c, 0x52,
+	0x04, 0x52, 0x6f, 0x77, 0x73, 0x22, 0x53, 0x0a, 0x0d, 0x48, 0x61, 0x72, 0x64, 0x77, 0x61, 0x72,
+	0x65, 0x49, 0x64, 0x41, 0x6c, 0x6c, 0x12, 0x22, 0x0a, 0x0c, 0x48, 0x61, 0x72, 0x64, 0x77, 0x61,
+	0x72, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0c, 0x48, 0x61,
+	0x72, 0x64, 0x77, 0x61, 0x72, 0x65, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x1e, 0x0a, 0x0a, 0x48, 0x61,
+	0x72, 0x64, 0x77, 0x61, 0x72, 0x65, 0x49, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0a,
+	0x48, 0x61, 0x72, 0x64, 0x77, 0x61, 0x72, 0x65, 0x49, 0x64, 0x22, 0x46, 0x0a, 0x0e, 0x50, 0x61,
+	0x72, 0x61, 0x6d, 0x49, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x14, 0x0a, 0x05,
+	0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x54, 0x6f, 0x6b,
+	0x65, 0x6e, 0x12, 0x1e, 0x0a, 0x0a, 0x48, 0x61, 0x72, 0x64, 0x77, 0x61, 0x72, 0x65, 0x49, 0x64,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x0a, 0x48, 0x61, 0x72, 0x64, 0x77, 0x61, 0x72, 0x65,
+	0x49, 0x64, 0x22, 0x54, 0x0a, 0x0f, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x49, 0x64, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x63, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65,
+	0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x4d, 0x65, 0x73, 0x73, 0x61, 0x67,
+	0x65, 0x49, 0x64, 0x12, 0x23, 0x0a, 0x04, 0x52, 0x6f, 0x77, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28,
+	0x0b, 0x32, 0x0f, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x49, 0x64, 0x41,
+	0x6c, 0x6c, 0x52, 0x04, 0x52, 0x6f, 0x77, 0x73, 0x22, 0x44, 0x0a, 0x0a, 0x50, 0x61, 0x72, 0x61,
+	0x6d, 0x49, 0x64, 0x41, 0x6c, 0x6c, 0x12, 0x1c, 0x0a, 0x09, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x4e,
+	0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x50, 0x61, 0x72, 0x61, 0x6d,
+	0x4e, 0x61, 0x6d, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x49, 0x64, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x05, 0x52, 0x07, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x49, 0x64, 0x32, 0xad,
+	0x03, 0x0a, 0x03, 0x61, 0x70, 0x69, 0x12, 0x43, 0x0a, 0x12, 0x47, 0x65, 0x74, 0x5f, 0x68, 0x61,
 	0x72, 0x64, 0x77, 0x61, 0x72, 0x65, 0x5f, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x12, 0x14, 0x2e, 0x61,
 	0x70, 0x69, 0x2e, 0x48, 0x61, 0x72, 0x64, 0x77, 0x61, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65,
 	0x73, 0x74, 0x1a, 0x15, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x48, 0x61, 0x72, 0x64, 0x77, 0x61, 0x72,
@@ -613,8 +963,17 @@ var file_api_proto_externalApi_proto_rawDesc = []byte{
 	0x70, 0x69, 0x2e, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x72, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x48,
 	0x61, 0x72, 0x64, 0x77, 0x61, 0x72, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x19,
 	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x52, 0x65, 0x67, 0x69, 0x73, 0x74, 0x72, 0x61, 0x74, 0x69, 0x6f,
-	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x42, 0x0b, 0x5a, 0x09, 0x61,
-	0x70, 0x69, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x00, 0x12, 0x44, 0x0a, 0x0f, 0x47,
+	0x65, 0x74, 0x5f, 0x68, 0x61, 0x72, 0x64, 0x77, 0x61, 0x72, 0x65, 0x5f, 0x69, 0x64, 0x12, 0x16,
+	0x2e, 0x61, 0x70, 0x69, 0x2e, 0x48, 0x61, 0x72, 0x64, 0x77, 0x61, 0x72, 0x65, 0x49, 0x64, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x48, 0x61, 0x72,
+	0x64, 0x77, 0x65, 0x72, 0x65, 0x49, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x63, 0x65, 0x22,
+	0x00, 0x12, 0x3b, 0x0a, 0x0c, 0x47, 0x65, 0x74, 0x5f, 0x70, 0x61, 0x72, 0x61, 0x6d, 0x5f, 0x69,
+	0x64, 0x12, 0x13, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x50, 0x61, 0x72, 0x61, 0x6d, 0x49, 0x64, 0x52,
+	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x14, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x50, 0x61, 0x72,
+	0x61, 0x6d, 0x49, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x63, 0x65, 0x22, 0x00, 0x42, 0x0b,
+	0x5a, 0x09, 0x61, 0x70, 0x69, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x62, 0x06, 0x70, 0x72, 0x6f,
+	0x74, 0x6f, 0x33,
 }
 
 var (
@@ -629,7 +988,7 @@ func file_api_proto_externalApi_proto_rawDescGZIP() []byte {
 	return file_api_proto_externalApi_proto_rawDescData
 }
 
-var file_api_proto_externalApi_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_api_proto_externalApi_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_api_proto_externalApi_proto_goTypes = []interface{}{
 	(*HardwareRequest)(nil),             // 0: api.HardwareRequest
 	(*HardwareParams)(nil),              // 1: api.HardwareParams
@@ -640,24 +999,36 @@ var file_api_proto_externalApi_proto_goTypes = []interface{}{
 	(*RegistrationRequest)(nil),         // 6: api.RegistrationRequest
 	(*RegistrationResponse)(nil),        // 7: api.RegistrationResponse
 	(*RegistrationHardwareRequest)(nil), // 8: api.RegistrationHardwareRequest
+	(*HardwareIdRequest)(nil),           // 9: api.HardwareIdRequest
+	(*HardwereIdResponce)(nil),          // 10: api.HardwereIdResponce
+	(*HardwareIdAll)(nil),               // 11: api.HardwareIdAll
+	(*ParamIdRequest)(nil),              // 12: api.ParamIdRequest
+	(*ParamIdResponce)(nil),             // 13: api.ParamIdResponce
+	(*ParamIdAll)(nil),                  // 14: api.ParamIdAll
 }
 var file_api_proto_externalApi_proto_depIdxs = []int32{
-	1, // 0: api.HardwareResponse.Params:type_name -> api.HardwareParams
-	3, // 1: api.UpdateRequest.Params:type_name -> api.UpdateParams
-	1, // 2: api.RegistrationHardwareRequest.Params:type_name -> api.HardwareParams
-	0, // 3: api.api.Get_hardware_value:input_type -> api.HardwareRequest
-	4, // 4: api.api.Update_param_value:input_type -> api.UpdateRequest
-	6, // 5: api.api.Registration:input_type -> api.RegistrationRequest
-	8, // 6: api.api.Registration_hardware:input_type -> api.RegistrationHardwareRequest
-	2, // 7: api.api.Get_hardware_value:output_type -> api.HardwareResponse
-	5, // 8: api.api.Update_param_value:output_type -> api.UpdateResponse
-	7, // 9: api.api.Registration:output_type -> api.RegistrationResponse
-	7, // 10: api.api.Registration_hardware:output_type -> api.RegistrationResponse
-	7, // [7:11] is the sub-list for method output_type
-	3, // [3:7] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	1,  // 0: api.HardwareResponse.Params:type_name -> api.HardwareParams
+	3,  // 1: api.UpdateRequest.Params:type_name -> api.UpdateParams
+	1,  // 2: api.RegistrationHardwareRequest.Params:type_name -> api.HardwareParams
+	11, // 3: api.HardwereIdResponce.Rows:type_name -> api.HardwareIdAll
+	14, // 4: api.ParamIdResponce.Rows:type_name -> api.ParamIdAll
+	0,  // 5: api.api.Get_hardware_value:input_type -> api.HardwareRequest
+	4,  // 6: api.api.Update_param_value:input_type -> api.UpdateRequest
+	6,  // 7: api.api.Registration:input_type -> api.RegistrationRequest
+	8,  // 8: api.api.Registration_hardware:input_type -> api.RegistrationHardwareRequest
+	9,  // 9: api.api.Get_hardware_id:input_type -> api.HardwareIdRequest
+	12, // 10: api.api.Get_param_id:input_type -> api.ParamIdRequest
+	2,  // 11: api.api.Get_hardware_value:output_type -> api.HardwareResponse
+	5,  // 12: api.api.Update_param_value:output_type -> api.UpdateResponse
+	7,  // 13: api.api.Registration:output_type -> api.RegistrationResponse
+	7,  // 14: api.api.Registration_hardware:output_type -> api.RegistrationResponse
+	10, // 15: api.api.Get_hardware_id:output_type -> api.HardwereIdResponce
+	13, // 16: api.api.Get_param_id:output_type -> api.ParamIdResponce
+	11, // [11:17] is the sub-list for method output_type
+	5,  // [5:11] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_api_proto_externalApi_proto_init() }
@@ -774,6 +1145,78 @@ func file_api_proto_externalApi_proto_init() {
 				return nil
 			}
 		}
+		file_api_proto_externalApi_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*HardwareIdRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_proto_externalApi_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*HardwereIdResponce); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_proto_externalApi_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*HardwareIdAll); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_proto_externalApi_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ParamIdRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_proto_externalApi_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ParamIdResponce); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_proto_externalApi_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*ParamIdAll); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
@@ -781,7 +1224,7 @@ func file_api_proto_externalApi_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_proto_externalApi_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   9,
+			NumMessages:   15,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
