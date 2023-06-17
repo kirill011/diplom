@@ -2,6 +2,7 @@ package main
 
 import (
 	api "diplom/api/proto"
+	inter "diplom/pkg/interceptors"
 	serv "diplom/pkg/serv"
 	"log"
 	"net"
@@ -14,7 +15,7 @@ func main() {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(grpc.UnaryInterceptor(inter.ServerAuthentication))
 	api.RegisterApiServer(s, &serv.ApiServ{})
 
 	l, err := net.Listen("tcp", ":8080")
