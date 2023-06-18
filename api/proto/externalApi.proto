@@ -8,23 +8,23 @@ option go_package = "api/proto";
 service api {
     //Метод позволяет получить список с параметрами 
     //и их значением для необходимого оборудования.
-    rpc Get_hardware_value (HardwareRequest) returns (HardwareResponse){};
+    rpc GetHardwareValue (HardwareRequest) returns (HardwareResponse){};
 
     //Метод позволяет менять параметры оборудования. 
     //Неуказанные параметры остаются неизменными.
-    rpc Update_param_value(UpdateRequest) returns (UpdateResponse){};
+    rpc UpdateParamValue(UpdateRequest) returns (UpdateResponse){};
 
     //Метод позволяет зарегистрировать нового пользователя.
     rpc Registration(RegistrationRequest) returns (RegistrationResponse){};
 
     //Метод позволяет зарегистрировать оборудование пользователя
-    rpc Registration_hardware(RegistrationHardwareRequest) returns (RegistrationResponse){};
+    rpc RegistrationHardware(RegistrationHardwareRequest) returns (RegistrationResponse){};
 
     //Метод позволяет получить все id оборудования пользователя
-    rpc Get_hardware_id(HardwareIdRequest) returns (HardwereIdResponce){};
+    rpc GetHardwareId(HardwareIdRequest) returns (HardwereIdResponce){};
 
     //Метод позволяет получить все id параметров выбранного оборудования
-    rpc Get_param_id(ParamIdRequest) returns (ParamIdResponce){};
+    rpc GetParamId(ParamIdRequest) returns (ParamIdResponce){};
 }
 
 message HardwareRequest{

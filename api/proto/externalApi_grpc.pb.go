@@ -19,12 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Api_GetHardwareValue_FullMethodName     = "/api.api/Get_hardware_value"
-	Api_UpdateParamValue_FullMethodName     = "/api.api/Update_param_value"
+	Api_GetHardwareValue_FullMethodName     = "/api.api/GetHardwareValue"
+	Api_UpdateParamValue_FullMethodName     = "/api.api/UpdateParamValue"
 	Api_Registration_FullMethodName         = "/api.api/Registration"
-	Api_RegistrationHardware_FullMethodName = "/api.api/Registration_hardware"
-	Api_GetHardwareId_FullMethodName        = "/api.api/Get_hardware_id"
-	Api_GetParamId_FullMethodName           = "/api.api/Get_param_id"
+	Api_RegistrationHardware_FullMethodName = "/api.api/RegistrationHardware"
+	Api_GetHardwareId_FullMethodName        = "/api.api/GetHardwareId"
+	Api_GetParamId_FullMethodName           = "/api.api/GetParamId"
 )
 
 // ApiClient is the client API for Api service.
@@ -281,11 +281,11 @@ var Api_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*ApiServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Get_hardware_value",
+			MethodName: "GetHardwareValue",
 			Handler:    _Api_GetHardwareValue_Handler,
 		},
 		{
-			MethodName: "Update_param_value",
+			MethodName: "UpdateParamValue",
 			Handler:    _Api_UpdateParamValue_Handler,
 		},
 		{
@@ -293,15 +293,15 @@ var Api_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Api_Registration_Handler,
 		},
 		{
-			MethodName: "Registration_hardware",
+			MethodName: "RegistrationHardware",
 			Handler:    _Api_RegistrationHardware_Handler,
 		},
 		{
-			MethodName: "Get_hardware_id",
+			MethodName: "GetHardwareId",
 			Handler:    _Api_GetHardwareId_Handler,
 		},
 		{
-			MethodName: "Get_param_id",
+			MethodName: "GetParamId",
 			Handler:    _Api_GetParamId_Handler,
 		},
 	},

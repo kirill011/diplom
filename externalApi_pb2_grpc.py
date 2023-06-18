@@ -14,13 +14,13 @@ class apiStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.Get_hardware_value = channel.unary_unary(
-                '/api.api/Get_hardware_value',
+        self.GetHardwareValue = channel.unary_unary(
+                '/api.api/GetHardwareValue',
                 request_serializer=externalApi__pb2.HardwareRequest.SerializeToString,
                 response_deserializer=externalApi__pb2.HardwareResponse.FromString,
                 )
-        self.Update_param_value = channel.unary_unary(
-                '/api.api/Update_param_value',
+        self.UpdateParamValue = channel.unary_unary(
+                '/api.api/UpdateParamValue',
                 request_serializer=externalApi__pb2.UpdateRequest.SerializeToString,
                 response_deserializer=externalApi__pb2.UpdateResponse.FromString,
                 )
@@ -29,18 +29,18 @@ class apiStub(object):
                 request_serializer=externalApi__pb2.RegistrationRequest.SerializeToString,
                 response_deserializer=externalApi__pb2.RegistrationResponse.FromString,
                 )
-        self.Registration_hardware = channel.unary_unary(
-                '/api.api/Registration_hardware',
+        self.RegistrationHardware = channel.unary_unary(
+                '/api.api/RegistrationHardware',
                 request_serializer=externalApi__pb2.RegistrationHardwareRequest.SerializeToString,
                 response_deserializer=externalApi__pb2.RegistrationResponse.FromString,
                 )
-        self.Get_hardware_id = channel.unary_unary(
-                '/api.api/Get_hardware_id',
+        self.GetHardwareId = channel.unary_unary(
+                '/api.api/GetHardwareId',
                 request_serializer=externalApi__pb2.HardwareIdRequest.SerializeToString,
                 response_deserializer=externalApi__pb2.HardwereIdResponce.FromString,
                 )
-        self.Get_param_id = channel.unary_unary(
-                '/api.api/Get_param_id',
+        self.GetParamId = channel.unary_unary(
+                '/api.api/GetParamId',
                 request_serializer=externalApi__pb2.ParamIdRequest.SerializeToString,
                 response_deserializer=externalApi__pb2.ParamIdResponce.FromString,
                 )
@@ -49,7 +49,7 @@ class apiStub(object):
 class apiServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def Get_hardware_value(self, request, context):
+    def GetHardwareValue(self, request, context):
         """Метод позволяет получить список с параметрами 
         и их значением для необходимого оборудования.
         """
@@ -57,7 +57,7 @@ class apiServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Update_param_value(self, request, context):
+    def UpdateParamValue(self, request, context):
         """Метод позволяет менять параметры оборудования. 
         Неуказанные параметры остаются неизменными.
         """
@@ -72,21 +72,21 @@ class apiServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Registration_hardware(self, request, context):
+    def RegistrationHardware(self, request, context):
         """Метод позволяет зарегистрировать оборудование пользователя
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Get_hardware_id(self, request, context):
+    def GetHardwareId(self, request, context):
         """Метод позволяет получить все id оборудования пользователя
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def Get_param_id(self, request, context):
+    def GetParamId(self, request, context):
         """Метод позволяет получить все id параметров выбранного оборудования
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -96,13 +96,13 @@ class apiServicer(object):
 
 def add_apiServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'Get_hardware_value': grpc.unary_unary_rpc_method_handler(
-                    servicer.Get_hardware_value,
+            'GetHardwareValue': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetHardwareValue,
                     request_deserializer=externalApi__pb2.HardwareRequest.FromString,
                     response_serializer=externalApi__pb2.HardwareResponse.SerializeToString,
             ),
-            'Update_param_value': grpc.unary_unary_rpc_method_handler(
-                    servicer.Update_param_value,
+            'UpdateParamValue': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateParamValue,
                     request_deserializer=externalApi__pb2.UpdateRequest.FromString,
                     response_serializer=externalApi__pb2.UpdateResponse.SerializeToString,
             ),
@@ -111,18 +111,18 @@ def add_apiServicer_to_server(servicer, server):
                     request_deserializer=externalApi__pb2.RegistrationRequest.FromString,
                     response_serializer=externalApi__pb2.RegistrationResponse.SerializeToString,
             ),
-            'Registration_hardware': grpc.unary_unary_rpc_method_handler(
-                    servicer.Registration_hardware,
+            'RegistrationHardware': grpc.unary_unary_rpc_method_handler(
+                    servicer.RegistrationHardware,
                     request_deserializer=externalApi__pb2.RegistrationHardwareRequest.FromString,
                     response_serializer=externalApi__pb2.RegistrationResponse.SerializeToString,
             ),
-            'Get_hardware_id': grpc.unary_unary_rpc_method_handler(
-                    servicer.Get_hardware_id,
+            'GetHardwareId': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetHardwareId,
                     request_deserializer=externalApi__pb2.HardwareIdRequest.FromString,
                     response_serializer=externalApi__pb2.HardwereIdResponce.SerializeToString,
             ),
-            'Get_param_id': grpc.unary_unary_rpc_method_handler(
-                    servicer.Get_param_id,
+            'GetParamId': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetParamId,
                     request_deserializer=externalApi__pb2.ParamIdRequest.FromString,
                     response_serializer=externalApi__pb2.ParamIdResponce.SerializeToString,
             ),
@@ -137,7 +137,7 @@ class api(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def Get_hardware_value(request,
+    def GetHardwareValue(request,
             target,
             options=(),
             channel_credentials=None,
@@ -147,14 +147,14 @@ class api(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.api/Get_hardware_value',
+        return grpc.experimental.unary_unary(request, target, '/api.api/GetHardwareValue',
             externalApi__pb2.HardwareRequest.SerializeToString,
             externalApi__pb2.HardwareResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Update_param_value(request,
+    def UpdateParamValue(request,
             target,
             options=(),
             channel_credentials=None,
@@ -164,7 +164,7 @@ class api(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.api/Update_param_value',
+        return grpc.experimental.unary_unary(request, target, '/api.api/UpdateParamValue',
             externalApi__pb2.UpdateRequest.SerializeToString,
             externalApi__pb2.UpdateResponse.FromString,
             options, channel_credentials,
@@ -188,7 +188,7 @@ class api(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Registration_hardware(request,
+    def RegistrationHardware(request,
             target,
             options=(),
             channel_credentials=None,
@@ -198,14 +198,14 @@ class api(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.api/Registration_hardware',
+        return grpc.experimental.unary_unary(request, target, '/api.api/RegistrationHardware',
             externalApi__pb2.RegistrationHardwareRequest.SerializeToString,
             externalApi__pb2.RegistrationResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Get_hardware_id(request,
+    def GetHardwareId(request,
             target,
             options=(),
             channel_credentials=None,
@@ -215,14 +215,14 @@ class api(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.api/Get_hardware_id',
+        return grpc.experimental.unary_unary(request, target, '/api.api/GetHardwareId',
             externalApi__pb2.HardwareIdRequest.SerializeToString,
             externalApi__pb2.HardwereIdResponce.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def Get_param_id(request,
+    def GetParamId(request,
             target,
             options=(),
             channel_credentials=None,
@@ -232,7 +232,7 @@ class api(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.api/Get_param_id',
+        return grpc.experimental.unary_unary(request, target, '/api.api/GetParamId',
             externalApi__pb2.ParamIdRequest.SerializeToString,
             externalApi__pb2.ParamIdResponce.FromString,
             options, channel_credentials,
