@@ -56,6 +56,7 @@ func ServerAuthentication(ctx context.Context, req interface{}, info *grpc.Unary
 	for rows.Next() {
 		rows.Scan(&row)
 	}
+	infoLog.Printf("Interceptor token:  %v\n", row)
 
 	if row != token[0] {
 		errorLog.Printf("Interceptor: %v\n", "Not authenticated")
