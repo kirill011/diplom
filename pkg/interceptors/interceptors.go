@@ -52,15 +52,20 @@ func ServerAuthentication(ctx context.Context, req interface{}, info *grpc.Unary
 		errorLog.Printf("Interceptor: %v\n", err)
 		return nil, errors.New("SQL query select execution error")
 	}
+	row := ""
 	for rows.Next() {
-		// Set ping-counts into the current ping value
-		meta.Append("MessageId", messageId)
-		// Metadata is sent on its own, so we need to send the header. There is also something called Trailer
-		ctx = metadata.NewIncomingContext(ctx, meta)
-		// Last but super important, execute the handler so that the actualy gRPC request is also performed
-		return handler(ctx, req)
+		rows.Scan(&row)
 	}
 
-	errorLog.Printf("Interceptor: %v\n", "Not authenticated")
-	return nil, errors.New("Not authenticated")
+	if row != token[0] {
+		errorLog.Printf("Interceptor: %v\n", "Not authenticated")
+		return nil, errors.New("Not authenticated")
+	}
+
+	meta.Append("MessageId", messageId)
+	// Metadata is sent on its own, so we need to send the header. There is also something called Trailer
+	ctx = metadata.NewIncomingContext(ctx, meta)
+	// Last but super important, execute the handler so that the actualy gRPC request is also performed
+	return handler(ctx, req)
+
 }
