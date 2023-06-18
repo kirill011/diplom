@@ -30,15 +30,9 @@ func main() {
 
 	req := &api.HardwareIdRequest{Token: "WWFzaGE6TGF2YQ=="}
 	res2, err := client.GetHardwareId(metadata.AppendToOutgoingContext(context.Background(), "token", "WWFzaGE6TGF2YQ=="), req)
-	if err != nil {
-		errorLog.Printf("Client: %v\n", err)
-	}
 	fmt.Println(res2)
 
 	req2 := &api.HardwareRequest{HarwareId: 1, Token: "WWFzaGE6TGF2YQ=="}
 	res3, err := client.GetHardwareValue(metadata.AppendToOutgoingContext(context.Background(), "token", "WWFzaGE6TGF2YQ=="), req2)
-	if err != nil {
-		errorLog.Printf("Client: %v\n", err)
-	}
 	fmt.Println(res3)
 }
