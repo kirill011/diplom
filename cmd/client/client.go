@@ -20,16 +20,15 @@ func main() {
 		errorLog.Fatalf("Client: %v\n", err)
 	}
 	client := api.NewApiClient(conn)
-	//ctx := metadata.AppendToOutgoingContext(context.Background(), "token", "")
+	ctx := metadata.AppendToOutgoingContext(context.Background(), "token", "")
 
-	//res, err := client.Registration(ctx, &api.RegistrationRequest{Login: "Yasha", Password: "Lava"})
-	//if err != nil {
-	//	errorLog.Fatalf("Client: %v\n", err)
-	//}
-	//fmt.Println(res.MessageId)
+	res, err := client.Registration(ctx, &api.RegistrationRequest{Login: "Yasha", Password: "Lava"})
+	if err != nil {
+		errorLog.Fatalf("Client: %v\n", err)
+	}
+	fmt.Println(res.MessageId)
 
-	req := &api.UpdateRequest{HardwareId: 1, Token: "", Params: []*api.UpdateParams{
-		&api.UpdateParams{ParamId: 1, ParamValue: 1}}}
-	res2, err := client.UpdateParamValue(metadata.AppendToOutgoingContext(context.Background(), "token", "WWFzaGE6TGF2YQ=="), req)
+	req := &api.HardwareIdRequest{Token: "WWFzaGE6TGF2YQ=="}
+	res2, err := client.GetHardwareId(metadata.AppendToOutgoingContext(context.Background(), "token", "WWFzaGE6TGF2YQ=="), req)
 	fmt.Println(res2)
 }
