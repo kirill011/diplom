@@ -13,8 +13,8 @@ import (
 )
 
 func ServerAuthentication(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (response interface{}, err error) {
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 
 	messageId := uuid.NewV4().String()
 	infoLog.Printf("%s : request start. MessageId : %v\n", info.FullMethod, messageId)
@@ -32,9 +32,8 @@ func ServerAuthentication(ctx context.Context, req interface{}, info *grpc.Unary
 	}
 
 	token := meta.Get("token")
-	if len(token) != 0 {
-		infoLog.Printf("Interceptor token: %v\n", token[0])
-	} else {
+
+	if len(token) == 0 {
 		errorLog.Printf("Interceptor: %v\n", "could not grab token from metadata")
 		return nil, errors.New("could not grab token from metadata")
 	}
