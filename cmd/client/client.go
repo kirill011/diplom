@@ -9,6 +9,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 )
 
 func main() {
@@ -19,14 +20,16 @@ func main() {
 		errorLog.Fatalf("Client: %v\n", err)
 	}
 	client := api.NewApiClient(conn)
+	//ctx := metadata.AppendToOutgoingContext(context.Background(), "token", "")
 
-	res, err := client.GetHardwareValue(context.Background(), &api.HardwareRequest{HarwareId: 1, Token: ""})
-	if err != nil {
-		errorLog.Fatalf("Client: %v\n", err)
-	}
-	fmt.Println(res.Params)
+	//res, err := client.Registration(ctx, &api.RegistrationRequest{Login: "Yasha", Password: "Lava"})
+	//if err != nil {
+	//	errorLog.Fatalf("Client: %v\n", err)
+	//}
+	//fmt.Println(res.MessageId)
+
 	req := &api.UpdateRequest{HardwareId: 1, Token: "", Params: []*api.UpdateParams{
 		&api.UpdateParams{ParamId: 1, ParamValue: 1}}}
-	res2, err := client.UpdateParamValue(context.Background(), req)
+	res2, err := client.UpdateParamValue(metadata.AppendToOutgoingContext(context.Background(), "token", "WWFzaGE6TGF2YQ=="), req)
 	fmt.Println(res2)
 }

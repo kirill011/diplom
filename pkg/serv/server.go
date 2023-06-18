@@ -10,9 +10,9 @@ import (
 	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
-	uuid "github.com/satori/go.uuid"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/metadata"
 )
 
 // Server...
@@ -20,14 +20,28 @@ type ApiServ struct {
 	pr.UnimplementedApiServer
 }
 
+func GetMessageId(ctx context.Context) (string, error) {
+	meta, ok := metadata.FromIncomingContext(ctx)
+	if !ok {
+		return "", errors.New("could not grab metadata from context")
+	}
+	MessageId := meta.Get("MessageId")
+	return MessageId[0], nil
+}
+
 // Вытягиваем из базы данные о параметрах оборудования
-func (ApiServ) GetHardwareValue(cont context.Context, req *pr.HardwareRequest) (*pr.HardwareResponse, error) {
+func (ApiServ) GetHardwareValue(ctx context.Context, req *pr.HardwareRequest) (*pr.HardwareResponse, error) {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("GetHardwareValue: %v\n", err)
 		return nil, errors.New("Unable to connect to database")
+	}
+	messageId, err := GetMessageId(ctx)
+	if err != nil {
+		errorLog.Printf("GetHardwareValue: %v\n", err)
+		return nil, errors.New("could not grab metadata from context")
 	}
 
 	rows, err := dbPool.Query(context.Background(), "select param_name, current_value from public.unit u join public.params p on p.param_id = u.param_id where u.hardware_id = $1;", req.HarwareId)
@@ -47,21 +61,26 @@ func (ApiServ) GetHardwareValue(cont context.Context, req *pr.HardwareRequest) (
 		ret = append(ret, &r)
 
 	}
-	responce := &pr.HardwareResponse{MessageId: uuid.NewV4().String(), Params: ret}
+	responce := &pr.HardwareResponse{MessageId: messageId, Params: ret}
 	infoLog.Printf("GetHardwareValue: request successful. Responce: %v\n", responce)
 	return responce, nil
 }
 
 // Обновление базы и пересылка на сериализатор
-func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*pr.UpdateResponse, error) {
+func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr.UpdateResponse, error) {
 
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
-	MessageId := uuid.NewV4().String()
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("UpdateParamValue: %v\n", err)
 		return nil, errors.New("Unable to connect to database")
+	}
+
+	messageId, err := GetMessageId(ctx)
+	if err != nil {
+		errorLog.Printf("UpdateParamValue: %v\n", err)
+		return nil, errors.New("could not grab metadata from context")
 	}
 
 	conn, err := grpc.Dial("127.0.0.1:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -77,7 +96,7 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 			errorLog.Printf("UpdateParamValue: %v\n", err)
 			return nil, errors.New("SQL query execution error")
 		}
-		res, err := client.SendToClient(context.Background(), &send.Message{Host: "Jopa", HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: MessageId})
+		res, err := client.SendToClient(context.Background(), &send.Message{Host: "Jopa", HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: messageId})
 		if err != nil {
 			errorLog.Printf("UpdateParamValue: %v\n", err)
 			return nil, errors.New("Function SendToClient error")
@@ -85,7 +104,7 @@ func (ApiServ) UpdateParamValue(cont context.Context, req *pr.UpdateRequest) (*p
 		ret = res
 	}
 
-	responce := &pr.UpdateResponse{MessageId: MessageId, ErrorCode: ret.ErrorCode}
+	responce := &pr.UpdateResponse{MessageId: messageId, ErrorCode: ret.ErrorCode}
 	infoLog.Printf("UpdateParamValue: request successful. Responce: %v\n", responce)
 	return responce, nil
 }
@@ -99,12 +118,19 @@ func (ApiServ) Registration(ctx context.Context, req *pr.RegistrationRequest) (*
 		errorLog.Printf("Registration: %v\n", err)
 		return nil, errors.New("Unable to connect to database")
 	}
+
+	messageId, err := GetMessageId(ctx)
+	if err != nil {
+		errorLog.Printf("GetHardwareValue: %v\n", err)
+		return nil, errors.New("could not grab metadata from context")
+	}
+
 	_, err = dbPool.Exec(context.Background(), "INSERT INTO public.users(login, password, actual, token) VALUES($1, $2, true, $3);", req.Login, req.Password, b64.StdEncoding.EncodeToString([]byte(req.Login+":"+req.Password)))
 	if err != nil {
 		errorLog.Printf("Registration: %v\n", err)
 		return nil, errors.New("SQL query execution error")
 	}
-	responce := &pr.RegistrationResponse{MessageId: uuid.NewV4().String(), ErrorCode: "OK"}
+	responce := &pr.RegistrationResponse{MessageId: messageId, ErrorCode: "OK"}
 	infoLog.Printf("Registration: request successful. Responce: %v\n", responce)
 	return responce, nil
 }
@@ -118,6 +144,13 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		errorLog.Printf("RegistrationHardware: %v\n", err)
 		return nil, errors.New("Unable to connect to database")
 	}
+
+	messageId, err := GetMessageId(ctx)
+	if err != nil {
+		errorLog.Printf("GetHardwareValue: %v\n", err)
+		return nil, errors.New("could not grab metadata from context")
+	}
+
 	rows, err := dbPool.Query(context.Background(), "select user_id from public.users where token = $1;", req.Token)
 	if err != nil {
 		errorLog.Printf("RegistrationHardware: %v\n", err)
@@ -172,7 +205,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		}
 	}
 
-	responce := &pr.RegistrationResponse{MessageId: uuid.NewV4().String(), ErrorCode: "OK"}
+	responce := &pr.RegistrationResponse{MessageId: messageId, ErrorCode: "OK"}
 	infoLog.Printf("RegistrationHardware: request successful. Responce: %v\n", responce)
 	return responce, nil
 }
@@ -185,6 +218,13 @@ func (ApiServ) GetHardwareId(ctx context.Context, req *pr.HardwareIdRequest) (*p
 		errorLog.Printf("GetHardwareId: %v\n", err)
 		return nil, errors.New("Unable to connect to database")
 	}
+
+	messageId, err := GetMessageId(ctx)
+	if err != nil {
+		errorLog.Printf("GetHardwareValue: %v\n", err)
+		return nil, errors.New("could not grab metadata from context")
+	}
+
 	rows, err := dbPool.Query(context.Background(), "select h.hard_name, h.hardware_id from public.hardware h join unit u on u.hardware_id = h.hardware_id join public.users us on us.user_id = u.user_id where us.token = $1;", req.Token)
 	if err != nil {
 		errorLog.Printf("GetHardwareId: %v\n", err)
@@ -202,7 +242,7 @@ func (ApiServ) GetHardwareId(ctx context.Context, req *pr.HardwareIdRequest) (*p
 		ret = append(ret, &r)
 
 	}
-	responce := &pr.HardwereIdResponce{MessageId: uuid.NewV4().String(), Rows: ret}
+	responce := &pr.HardwereIdResponce{MessageId: messageId, Rows: ret}
 	infoLog.Printf("GetHardwareId: request successful. Responce: %v\n", responce)
 	return responce, nil
 
@@ -216,6 +256,13 @@ func (ApiServ) GetParamId(ctx context.Context, req *pr.ParamIdRequest) (*pr.Para
 		errorLog.Printf("GetParamId: %v\n", err)
 		return nil, errors.New("Unable to connect to database")
 	}
+
+	messageId, err := GetMessageId(ctx)
+	if err != nil {
+		errorLog.Printf("GetHardwareValue: %v\n", err)
+		return nil, errors.New("could not grab metadata from context")
+	}
+
 	rows, err := dbPool.Query(context.Background(), "select p.param_name, p.param_id from public.params p join unit u on u.p.param_id = p.param_id join public.users us on us.user_id = u.user_id join public.hardware u on u.hardware_id = h.hardware_id where us.token = $1 and h.hardware_id = $2;", req.Token, req.HardwareId)
 	if err != nil {
 		errorLog.Printf("GetParamId: %v\n", err)
@@ -233,7 +280,7 @@ func (ApiServ) GetParamId(ctx context.Context, req *pr.ParamIdRequest) (*pr.Para
 		ret = append(ret, &r)
 
 	}
-	responce := &pr.ParamIdResponce{MessageId: uuid.NewV4().String(), Rows: ret}
+	responce := &pr.ParamIdResponce{MessageId: messageId, Rows: ret}
 	infoLog.Printf("GetParamId: request successful. Responce: %v\n", responce)
 	return responce, nil
 }
