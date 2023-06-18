@@ -31,8 +31,8 @@ func GetMessageId(ctx context.Context) (string, error) {
 
 // Вытягиваем из базы данные о параметрах оборудования
 func (ApiServ) GetHardwareValue(ctx context.Context, req *pr.HardwareRequest) (*pr.HardwareResponse, error) {
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("GetHardwareValue: %v\n", err)
@@ -69,8 +69,8 @@ func (ApiServ) GetHardwareValue(ctx context.Context, req *pr.HardwareRequest) (*
 // Обновление базы и пересылка на сериализатор
 func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr.UpdateResponse, error) {
 
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("UpdateParamValue: %v\n", err)
@@ -111,8 +111,8 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 
 // Функция регистрирует пользователя в системе
 func (ApiServ) Registration(ctx context.Context, req *pr.RegistrationRequest) (*pr.RegistrationResponse, error) {
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("Registration: %v\n", err)
@@ -137,8 +137,8 @@ func (ApiServ) Registration(ctx context.Context, req *pr.RegistrationRequest) (*
 
 // Функция для регистрации оборудования
 func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHardwareRequest) (*pr.RegistrationResponse, error) {
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("RegistrationHardware: %v\n", err)
@@ -211,8 +211,8 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 }
 
 func (ApiServ) GetHardwareId(ctx context.Context, req *pr.HardwareIdRequest) (*pr.HardwereIdResponce, error) {
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("GetHardwareId: %v\n", err)
@@ -249,8 +249,8 @@ func (ApiServ) GetHardwareId(ctx context.Context, req *pr.HardwareIdRequest) (*p
 }
 
 func (ApiServ) GetParamId(ctx context.Context, req *pr.ParamIdRequest) (*pr.ParamIdResponce, error) {
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("GetParamId: %v\n", err)
