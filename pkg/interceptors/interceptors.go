@@ -39,7 +39,7 @@ func ServerAuthentication(ctx context.Context, req interface{}, info *grpc.Unary
 		return nil, errors.New("could not grab token from metadata")
 	}
 
-	if token[0] == "" && info.FullMethod == "/api.api/Registration" {
+	if info.FullMethod == "/api.api/Registration" {
 		meta.Append("MessageId", messageId)
 		// Metadata is sent on its own, so we need to send the header. There is also something called Trailer
 		ctx = metadata.NewIncomingContext(ctx, meta)
