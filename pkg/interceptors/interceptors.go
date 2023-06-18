@@ -21,20 +21,20 @@ func ServerAuthentication(ctx context.Context, req interface{}, info *grpc.Unary
 
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
-		errorLog.Printf("Interceptor: %v\n", err)
+		errorLog.Printf("Interceptor: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Unable to connect to database")
 	}
 
 	meta, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
-		errorLog.Printf("Interceptor: %v\n", "could not grab metadata from context")
+		errorLog.Printf("Interceptor: %v MessageId : %v\n", "could not grab metadata from context", messageId)
 		return nil, errors.New("could not grab metadata from context")
 	}
 
 	token := meta.Get("token")
 
 	if len(token) == 0 {
-		errorLog.Printf("Interceptor: %v\n", "could not grab token from metadata")
+		errorLog.Printf("Interceptor: %v MessageId : %v\n", "could not grab token from metadata", messageId)
 		return nil, errors.New("could not grab token from metadata")
 	}
 
@@ -48,17 +48,16 @@ func ServerAuthentication(ctx context.Context, req interface{}, info *grpc.Unary
 
 	rows, err := dbPool.Query(context.Background(), "select token from public.users where token = $1;", token[0])
 	if err != nil {
-		errorLog.Printf("Interceptor: %v\n", err)
+		errorLog.Printf("Interceptor: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("SQL query select execution error")
 	}
 	row := ""
 	for rows.Next() {
 		rows.Scan(&row)
 	}
-	infoLog.Printf("Interceptor token:  %v\n", row)
 
 	if row != token[0] {
-		errorLog.Printf("Interceptor: %v\n", "Not authenticated")
+		errorLog.Printf("Interceptor: %v MessageId : %v\n", "Not authenticated", messageId)
 		return nil, errors.New("Not authenticated")
 	}
 
