@@ -44,6 +44,11 @@ class apiStub(object):
                 request_serializer=externalApi__pb2.ParamIdRequest.SerializeToString,
                 response_deserializer=externalApi__pb2.ParamIdResponce.FromString,
                 )
+        self.RegistrationParams = channel.unary_unary(
+                '/api.api/RegistrationParams',
+                request_serializer=externalApi__pb2.RegParamsReq.SerializeToString,
+                response_deserializer=externalApi__pb2.RegParamsResponce.FromString,
+                )
 
 
 class apiServicer(object):
@@ -93,6 +98,13 @@ class apiServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def RegistrationParams(self, request, context):
+        """Метод позволяет зарегистрировать оборудование пользователя
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_apiServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -125,6 +137,11 @@ def add_apiServicer_to_server(servicer, server):
                     servicer.GetParamId,
                     request_deserializer=externalApi__pb2.ParamIdRequest.FromString,
                     response_serializer=externalApi__pb2.ParamIdResponce.SerializeToString,
+            ),
+            'RegistrationParams': grpc.unary_unary_rpc_method_handler(
+                    servicer.RegistrationParams,
+                    request_deserializer=externalApi__pb2.RegParamsReq.FromString,
+                    response_serializer=externalApi__pb2.RegParamsResponce.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -235,5 +252,22 @@ class api(object):
         return grpc.experimental.unary_unary(request, target, '/api.api/GetParamId',
             externalApi__pb2.ParamIdRequest.SerializeToString,
             externalApi__pb2.ParamIdResponce.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def RegistrationParams(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/api.api/RegistrationParams',
+            externalApi__pb2.RegParamsReq.SerializeToString,
+            externalApi__pb2.RegParamsResponce.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

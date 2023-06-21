@@ -25,6 +25,7 @@ const (
 	Api_RegistrationHardware_FullMethodName = "/api.api/RegistrationHardware"
 	Api_GetHardwareId_FullMethodName        = "/api.api/GetHardwareId"
 	Api_GetParamId_FullMethodName           = "/api.api/GetParamId"
+	Api_RegistrationParams_FullMethodName   = "/api.api/RegistrationParams"
 )
 
 // ApiClient is the client API for Api service.
@@ -45,6 +46,8 @@ type ApiClient interface {
 	GetHardwareId(ctx context.Context, in *HardwareIdRequest, opts ...grpc.CallOption) (*HardwereIdResponce, error)
 	// Метод позволяет получить все id параметров выбранного оборудования
 	GetParamId(ctx context.Context, in *ParamIdRequest, opts ...grpc.CallOption) (*ParamIdResponce, error)
+	// Метод позволяет зарегистрировать оборудование пользователя
+	RegistrationParams(ctx context.Context, in *RegParamsReq, opts ...grpc.CallOption) (*RegParamsResponce, error)
 }
 
 type apiClient struct {
@@ -109,6 +112,15 @@ func (c *apiClient) GetParamId(ctx context.Context, in *ParamIdRequest, opts ...
 	return out, nil
 }
 
+func (c *apiClient) RegistrationParams(ctx context.Context, in *RegParamsReq, opts ...grpc.CallOption) (*RegParamsResponce, error) {
+	out := new(RegParamsResponce)
+	err := c.cc.Invoke(ctx, Api_RegistrationParams_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ApiServer is the server API for Api service.
 // All implementations must embed UnimplementedApiServer
 // for forward compatibility
@@ -127,6 +139,8 @@ type ApiServer interface {
 	GetHardwareId(context.Context, *HardwareIdRequest) (*HardwereIdResponce, error)
 	// Метод позволяет получить все id параметров выбранного оборудования
 	GetParamId(context.Context, *ParamIdRequest) (*ParamIdResponce, error)
+	// Метод позволяет зарегистрировать оборудование пользователя
+	RegistrationParams(context.Context, *RegParamsReq) (*RegParamsResponce, error)
 	mustEmbedUnimplementedApiServer()
 }
 
@@ -151,6 +165,9 @@ func (UnimplementedApiServer) GetHardwareId(context.Context, *HardwareIdRequest)
 }
 func (UnimplementedApiServer) GetParamId(context.Context, *ParamIdRequest) (*ParamIdResponce, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetParamId not implemented")
+}
+func (UnimplementedApiServer) RegistrationParams(context.Context, *RegParamsReq) (*RegParamsResponce, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method RegistrationParams not implemented")
 }
 func (UnimplementedApiServer) mustEmbedUnimplementedApiServer() {}
 
@@ -273,6 +290,24 @@ func _Api_GetParamId_Handler(srv interface{}, ctx context.Context, dec func(inte
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Api_RegistrationParams_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(RegParamsReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ApiServer).RegistrationParams(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Api_RegistrationParams_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ApiServer).RegistrationParams(ctx, req.(*RegParamsReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Api_ServiceDesc is the grpc.ServiceDesc for Api service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -303,6 +338,10 @@ var Api_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetParamId",
 			Handler:    _Api_GetParamId_Handler,
+		},
+		{
+			MethodName: "RegistrationParams",
+			Handler:    _Api_RegistrationParams_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

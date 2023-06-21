@@ -167,7 +167,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		errorLog.Printf("GetHardwareValue: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("could not grab metadata from context")
 	}
-	dbPool, err := pgxpool.New(context.Background(), "postgres://dip:dip@localhost:5432/hardware") //os.Getenv("DB"))
+	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Unable to connect to database")
@@ -179,53 +179,10 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		return nil, errors.New("No valid Host")
 	}
 
-	rows, err := dbPool.Query(context.Background(), "select user_id from public.users where token = $1 limit 1;", req.Token)
-	if err != nil {
-		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
-		return nil, errors.New("SQL query select execution error")
-	}
-
-	var userId int
-
-	rows.Next()
-	err = rows.Scan(&userId)
-	if err != nil {
-		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
-		return nil, errors.New("Error reading 2 result of SQL query")
-	}
-
-	var hardId int
-	hardRows, err := dbPool.Query(context.Background(), "INSERT INTO public.hardware(hard_name, ip) VALUES($1, $2) returning hardware_id", req.HardName, req.Ip)
+	_, err = dbPool.Exec(context.Background(), "INSERT INTO public.hardware(hard_name, ip) VALUES($1, $2)", req.HardName, req.Ip)
 	if err != nil {
 		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("SQL query insert 1 execution error")
-	}
-
-	hardRows.Next()
-	err = hardRows.Scan(&hardId)
-	if err != nil {
-		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
-		return nil, errors.New("Error reading 1 result of SQL query")
-	}
-	for _, val := range req.Params {
-
-		var paramId int
-		ParamRows, err := dbPool.Query(context.Background(), "INSERT INTO public.params(param_name, current_value) VALUES($1, $2) returning param_id", val.ParamName, val.ParamValue)
-		if err != nil {
-			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
-			return nil, errors.New("SQL query insert 2 execution error")
-		}
-		ParamRows.Next()
-		err = ParamRows.Scan(&paramId)
-		if err != nil {
-			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
-			return nil, errors.New("Error reading result of SQL query")
-		}
-		_, err = dbPool.Exec(context.Background(), "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES ($1, $2, $3)", hardId, userId, paramId)
-		if err != nil {
-			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
-			return nil, errors.New("SQL query insert 2 execution error")
-		}
 	}
 
 	responce := &pr.RegistrationResponse{MessageId: messageId, ErrorCode: "OK"}
@@ -272,6 +229,59 @@ func (ApiServ) GetHardwareId(ctx context.Context, req *pr.HardwareIdRequest) (*p
 
 }
 
+func (ApiServ) RegistrationParams(ctx context.Context, req *pr.RegParamsReq) (*pr.RegParamsResponce, error) {
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lmicroseconds)
+
+	messageId, err := GetMessageId(ctx)
+	if err != nil {
+		errorLog.Printf("RegistrationParams: %v MessageId : %v\n", err, messageId)
+		return nil, errors.New("could not grab metadata from context")
+	}
+
+	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	if err != nil {
+		errorLog.Printf("RegistrationParams: %v MessageId : %v\n", err, messageId)
+		return nil, errors.New("Unable to connect to database")
+	}
+
+	rows, err := dbPool.Query(context.Background(), "select user_id from public.users where token = $1 limit 1;", req.Token)
+	if err != nil {
+		errorLog.Printf("RegistrationParams: %v MessageId : %v\n", err, messageId)
+		return nil, errors.New("SQL query select execution error")
+	}
+
+	var userId int
+
+	rows.Next()
+	err = rows.Scan(&userId)
+	if err != nil {
+		errorLog.Printf("RegistrationParams: %v MessageId : %v\n", err, messageId)
+		return nil, errors.New("Error reading 2 result of SQL query")
+	}
+
+	var paramId int
+	ParamRows, err := dbPool.Query(context.Background(), "INSERT INTO public.params(param_name, current_value) VALUES($1, $2) returning param_id", req.ParamName, req.ParamValue)
+	if err != nil {
+		errorLog.Printf("RegistrationParams: %v MessageId : %v\n", err, messageId)
+		return nil, errors.New("SQL query insert 2 execution error")
+	}
+	ParamRows.Next()
+	err = ParamRows.Scan(&paramId)
+	if err != nil {
+		errorLog.Printf("RegistrationParams: %v MessageId : %v\n", err, messageId)
+		return nil, errors.New("Error reading result of SQL query")
+	}
+	_, err = dbPool.Exec(context.Background(), "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES ($1, $2, $3)", req.HardId, userId, paramId)
+	if err != nil {
+		errorLog.Printf("RegistrationParams: %v MessageId : %v\n", err, messageId)
+		return nil, errors.New("SQL query insert 2 execution error")
+	}
+	responce := &pr.RegParamsResponce{MessageId: messageId, ErrorCode: "OK"}
+	infoLog.Printf("RegistrationParams: request successful. MessageId: %v\n", messageId)
+	return responce, nil
+}
+
 func (ApiServ) GetParamId(ctx context.Context, req *pr.ParamIdRequest) (*pr.ParamIdResponce, error) {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lmicroseconds)
@@ -288,7 +298,7 @@ func (ApiServ) GetParamId(ctx context.Context, req *pr.ParamIdRequest) (*pr.Para
 		return nil, errors.New("Unable to connect to database")
 	}
 
-	rows, err := dbPool.Query(context.Background(), "select p.param_name, p.param_id from public.params p join unit u on u.p.param_id = p.param_id join public.users us on us.user_id = u.user_id join public.hardware u on u.hardware_id = h.hardware_id where us.token = $1 and h.hardware_id = $2 limit 1;", req.Token, req.HardwareId)
+	rows, err := dbPool.Query(context.Background(), "select p.param_name, p.param_id from public.params p join unit u on u.param_id = p.param_id join public.users us on us.user_id = u.user_id join public.hardware u on u.hardware_id = h.hardware_id where us.token = $1 and h.hardware_id = $2 limit 1;", req.Token, req.HardwareId)
 	if err != nil {
 		errorLog.Printf("GetParamId: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("SQL query select execution error")

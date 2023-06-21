@@ -25,7 +25,7 @@ func main() {
 	mas := make([]*api.HardwareParams, 1, 2)
 	mas = append(mas, &api.HardwareParams{ParamName: "1", ParamValue: 1})
 	mas = append(mas, &api.HardwareParams{ParamName: "2", ParamValue: 2})
-	res, err := client.RegistrationHardware(ctx, &api.RegistrationHardwareRequest{HardName: "Yasha", Ip: "10.01.01.01", Token: "Q3ZiOjU0Mw==", Params: mas})
+	res, err := client.RegistrationHardware(ctx, &api.RegistrationHardwareRequest{HardName: "Yasha", Ip: "10.01.01.01", Token: "Q3ZiOjU0Mw=="})
 	if err != nil {
 		errorLog.Printf("Client: %v\n", err)
 	}

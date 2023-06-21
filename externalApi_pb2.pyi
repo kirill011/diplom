@@ -75,17 +75,35 @@ class ParamIdResponce(_message.Message):
     Rows: _containers.RepeatedCompositeFieldContainer[ParamIdAll]
     def __init__(self, MessageId: _Optional[str] = ..., Rows: _Optional[_Iterable[_Union[ParamIdAll, _Mapping]]] = ...) -> None: ...
 
+class RegParamsReq(_message.Message):
+    __slots__ = ["HardId", "ParamName", "ParamValue", "Token"]
+    HARDID_FIELD_NUMBER: _ClassVar[int]
+    HardId: int
+    PARAMNAME_FIELD_NUMBER: _ClassVar[int]
+    PARAMVALUE_FIELD_NUMBER: _ClassVar[int]
+    ParamName: str
+    ParamValue: float
+    TOKEN_FIELD_NUMBER: _ClassVar[int]
+    Token: str
+    def __init__(self, HardId: _Optional[int] = ..., Token: _Optional[str] = ..., ParamName: _Optional[str] = ..., ParamValue: _Optional[float] = ...) -> None: ...
+
+class RegParamsResponce(_message.Message):
+    __slots__ = ["ErrorCode", "MessageId"]
+    ERRORCODE_FIELD_NUMBER: _ClassVar[int]
+    ErrorCode: str
+    MESSAGEID_FIELD_NUMBER: _ClassVar[int]
+    MessageId: str
+    def __init__(self, MessageId: _Optional[str] = ..., ErrorCode: _Optional[str] = ...) -> None: ...
+
 class RegistrationHardwareRequest(_message.Message):
-    __slots__ = ["HardName", "Ip", "Params", "Token"]
+    __slots__ = ["HardName", "Ip", "Token"]
     HARDNAME_FIELD_NUMBER: _ClassVar[int]
     HardName: str
     IP_FIELD_NUMBER: _ClassVar[int]
     Ip: str
-    PARAMS_FIELD_NUMBER: _ClassVar[int]
-    Params: _containers.RepeatedCompositeFieldContainer[HardwareParams]
     TOKEN_FIELD_NUMBER: _ClassVar[int]
     Token: str
-    def __init__(self, HardName: _Optional[str] = ..., Ip: _Optional[str] = ..., Token: _Optional[str] = ..., Params: _Optional[_Iterable[_Union[HardwareParams, _Mapping]]] = ...) -> None: ...
+    def __init__(self, HardName: _Optional[str] = ..., Ip: _Optional[str] = ..., Token: _Optional[str] = ...) -> None: ...
 
 class RegistrationRequest(_message.Message):
     __slots__ = ["Login", "Password"]
