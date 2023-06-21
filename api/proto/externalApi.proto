@@ -72,7 +72,7 @@ message RegistrationHardwareRequest{
     string HardName = 1;
     string Ip = 2;
     string Token = 3;
-    repeated HardwareParams Params = 4;
+    repeated RegistrationHardwareParams Params = 4;
 }
 
 message HardwareIdRequest{
