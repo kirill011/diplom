@@ -23,10 +23,8 @@ func main() {
 		errorLog.Fatalf("Server: %v\n", err)
 	}
 	infoLog.Print("Server: server starting")
-	go func() {
-		if err := s.Serve(l); err != nil {
-			errorLog.Fatalf("Server: %v\n", err)
-		}
-	}()
+	if err := s.Serve(l); err != nil {
+		errorLog.Fatalf("Server: %v\n", err)
+	}
 	select {}
 }
