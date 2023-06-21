@@ -179,13 +179,17 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		return nil, errors.New("No valid Host")
 	}
 
-	_, err = dbPool.Exec(context.Background(), "INSERT INTO public.hardware(hard_name, ip) VALUES($1, $2)", req.HardName, req.Ip)
+	hardRows, err := dbPool.Query(context.Background(), "INSERT INTO public.hardware(hard_name, ip) VALUES($1, $2) returning hardware_id", req.HardName, req.Ip)
 	if err != nil {
 		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("SQL query insert 1 execution error")
 	}
 
-	responce := &pr.RegistrationResponse{MessageId: messageId, ErrorCode: "OK"}
+	var hardId int
+	hardRows.Next()
+	hardRows.Scan(&hardId)
+
+	responce := &pr.RegistrationResponse{MessageId: messageId, ErrorCode: "OK", HardId: int32(hardId)}
 	infoLog.Printf("RegistrationHardware: request successful. MessageId: %v\n", messageId)
 	return responce, nil
 }

@@ -81,6 +81,7 @@ message RegistrationRequest{
 message RegistrationResponse{
     string MessageId = 1;
     string ErrorCode = 2;
+    int32 HardId = 3;
 }
 
 message RegistrationHardwareRequest{

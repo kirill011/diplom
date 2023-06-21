@@ -114,12 +114,14 @@ class RegistrationRequest(_message.Message):
     def __init__(self, Login: _Optional[str] = ..., Password: _Optional[str] = ...) -> None: ...
 
 class RegistrationResponse(_message.Message):
-    __slots__ = ["ErrorCode", "MessageId"]
+    __slots__ = ["ErrorCode", "HardId", "MessageId"]
     ERRORCODE_FIELD_NUMBER: _ClassVar[int]
     ErrorCode: str
+    HARDID_FIELD_NUMBER: _ClassVar[int]
+    HardId: int
     MESSAGEID_FIELD_NUMBER: _ClassVar[int]
     MessageId: str
-    def __init__(self, MessageId: _Optional[str] = ..., ErrorCode: _Optional[str] = ...) -> None: ...
+    def __init__(self, MessageId: _Optional[str] = ..., ErrorCode: _Optional[str] = ..., HardId: _Optional[int] = ...) -> None: ...
 
 class UpdateParams(_message.Message):
     __slots__ = ["ParamId", "ParamValue"]
