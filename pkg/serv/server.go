@@ -167,7 +167,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		errorLog.Printf("GetHardwareValue: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("could not grab metadata from context")
 	}
-	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	dbPool, err := pgxpool.New(context.Background(), "postgres://dip:dip@localhost:5432/hardware") //os.Getenv("DB"))
 	if err != nil {
 		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Unable to connect to database")
