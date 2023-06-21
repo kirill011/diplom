@@ -223,7 +223,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		}
 		_, err = dbPool.Exec(context.Background(), "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES($1, $2, $3);", hardId, userId, paramId)
 		if err != nil {
-			errorLog.Printf("RegistrationHardware: %v, querry = %v %v %v MessageId : %v\n", err, userId, hardId, paramId, messageId)
+			errorLog.Printf("RegistrationHardware: %vMessageId : %v\n", err, messageId)
 			return nil, errors.New("SQL query insert 3 execution error")
 		}
 	}
