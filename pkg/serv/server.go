@@ -41,6 +41,7 @@ func (ApiServ) GetHardwareValue(ctx context.Context, req *pr.HardwareRequest) (*
 	}
 
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	defer dbPool.Close()
 	if err != nil {
 		errorLog.Printf("GetHardwareValue: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Unable to connect to database")
@@ -80,6 +81,7 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 	}
 
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	defer dbPool.Close()
 	if err != nil {
 		errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Unable to connect to database")
@@ -139,6 +141,7 @@ func (ApiServ) Registration(ctx context.Context, req *pr.RegistrationRequest) (*
 	}
 
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	defer dbPool.Close()
 	if err != nil {
 		errorLog.Printf("Registration: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Unable to connect to database")
@@ -168,6 +171,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		return nil, errors.New("could not grab metadata from context")
 	}
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	defer dbPool.Close()
 	if err != nil {
 		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Unable to connect to database")
@@ -205,6 +209,7 @@ func (ApiServ) GetHardwareId(ctx context.Context, req *pr.HardwareIdRequest) (*p
 	}
 
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	defer dbPool.Close()
 	if err != nil {
 		errorLog.Printf("GetHardwareId: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Unable to connect to database")
@@ -244,6 +249,7 @@ func (ApiServ) RegistrationParams(ctx context.Context, req *pr.RegParamsReq) (*p
 	}
 
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	defer dbPool.Close()
 	if err != nil {
 		errorLog.Printf("RegistrationParams: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Unable to connect to database")
@@ -297,6 +303,7 @@ func (ApiServ) GetParamId(ctx context.Context, req *pr.ParamIdRequest) (*pr.Para
 	}
 
 	dbPool, err := pgxpool.New(context.Background(), os.Getenv("DB"))
+	defer dbPool.Close()
 	if err != nil {
 		errorLog.Printf("GetParamId: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Unable to connect to database")
