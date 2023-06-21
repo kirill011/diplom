@@ -227,6 +227,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 			errorLog.Printf("RegistrationHardware: %vMessageId : %v\n", err, messageId)
 			return nil, errors.New("SQL query insert 3 execution error")
 		}
+		infoLog.Println("OK")
 	}
 
 	responce := &pr.RegistrationResponse{MessageId: messageId, ErrorCode: "OK"}
