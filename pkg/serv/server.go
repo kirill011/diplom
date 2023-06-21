@@ -6,7 +6,6 @@ import (
 	send "diplom/send"
 	b64 "encoding/base64"
 	"errors"
-	"fmt"
 	"log"
 	"os"
 	"regexp"
@@ -222,7 +221,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
 			return nil, errors.New("Error reading result of SQL query")
 		}
-		fmt.Println(val)
+		infoLog.Println(val)
 		_, err = dbPool.Exec(context.Background(), "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES($1, $2, $3);", hardId, userId, paramId)
 		if err != nil {
 			errorLog.Printf("RegistrationHardware: %vMessageId : %v\n", err, messageId)
