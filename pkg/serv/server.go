@@ -173,7 +173,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		return nil, errors.New("Unable to connect to database")
 	}
 
-	match, err := regexp.MatchString(`([0-9]{1,3}[\.]){3}[0-9]{1,3}`, req.Ip)
+	match, _ := regexp.MatchString(`([0-9]{1,3}[\.]){3}[0-9]{1,3}`, req.Ip)
 	if match != true {
 		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", errors.New("No valid Host"), messageId)
 		return nil, errors.New("No valid Host")
