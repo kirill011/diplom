@@ -9,9 +9,7 @@ import (
 	"log"
 	"os"
 	"regexp"
-	"time"
 
-	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -209,8 +207,6 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Error reading 1 result of SQL query")
 	}
-	query := "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES (@hardId, @userId, @paramId)"
-	batch := &pgx.Batch{}
 	for _, val := range req.Params {
 
 		var paramId int
@@ -225,22 +221,15 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
 			return nil, errors.New("Error reading result of SQL query")
 		}
-		args := pgx.NamedArgs{
-			"hardId":  hardId,
-			"userId":  userId,
-			"paramId": paramId,
+		ret, err := dbPool.Query(context.Background(), "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES ($hardId, $userId, $paramId) returning param_id", val.ParamName, val.ParamValue)
+		if err != nil {
+			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
+			return nil, errors.New("SQL query insert 2 execution error")
 		}
-		batch.Queue(query, args)
+		ret.Next()
+		ret.Scan(&paramId)
+		infoLog.Println(paramId)
 	}
-	cont, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	res := dbPool.SendBatch(cont, batch)
-	_, err = res.Exec()
-	if err != nil {
-		errorLog.Printf("RegistrationHardware: %vMessageId : %v\n", err, messageId)
-		return nil, errors.New("SQL query insert 3 execution error")
-	}
-	res.Close()
 
 	responce := &pr.RegistrationResponse{MessageId: messageId, ErrorCode: "OK"}
 	infoLog.Printf("RegistrationHardware: request successful. MessageId: %v\n", messageId)
