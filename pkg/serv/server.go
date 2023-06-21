@@ -191,18 +191,18 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		hardRows, err := dbPool.Query(context.Background(), "INSERT INTO public.hardware(hard_name, ip) VALUES($1, $2) returning hardware_id", req.HardName, req.Ip)
 		if err != nil {
 			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
-			return nil, errors.New("SQL query insert execution error")
+			return nil, errors.New("SQL query insert 1 execution error")
 		}
 		hardRows.Next()
 		err = hardRows.Scan(&hardId)
 		if err != nil {
 			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
-			return nil, errors.New("Error reading result of SQL query")
+			return nil, errors.New("Error reading 1 result of SQL query")
 		}
 		err = rows.Scan(&userId)
 		if err != nil {
 			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
-			return nil, errors.New("Error reading result of SQL query")
+			return nil, errors.New("Error reading 2 result of SQL query")
 		}
 	}
 
@@ -211,7 +211,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		ParamRows, err := dbPool.Query(context.Background(), "INSERT INTO public.params(param_name, current_value) VALUES($1, $2) returning param_id", val.ParamName, val.ParamValue)
 		if err != nil {
 			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
-			return nil, errors.New("SQL query insert execution error")
+			return nil, errors.New("SQL query insert 2 execution error")
 		}
 		ParamRows.Next()
 		err = ParamRows.Scan(&paramId)
@@ -223,7 +223,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		_, err = dbPool.Exec(context.Background(), "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES($1, $2, $3);", userId, hardId, paramId)
 		if err != nil {
 			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
-			return nil, errors.New("SQL query insert execution error")
+			return nil, errors.New("SQL query insert 3 execution error")
 		}
 	}
 
