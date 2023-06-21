@@ -214,6 +214,8 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
 			return nil, errors.New("SQL query insert 2 execution error")
 		}
+		ParamRows.Scan(&paramId)
+		fmt.Println(paramId, "1 zn")
 		ParamRows.Next()
 		err = ParamRows.Scan(&paramId)
 		if err != nil {
