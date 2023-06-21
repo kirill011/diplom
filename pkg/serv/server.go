@@ -207,8 +207,9 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Error reading 1 result of SQL query")
 	}
-
+	paramsId := make([]int, 1, 1)
 	for _, val := range req.Params {
+
 		var paramId int
 		ParamRows, err := dbPool.Query(context.Background(), "INSERT INTO public.params(param_name, current_value) VALUES($1, $2) returning param_id", val.ParamName, val.ParamValue)
 		if err != nil {
@@ -222,12 +223,14 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 			return nil, errors.New("Error reading result of SQL query")
 		}
 		infoLog.Println(val, paramId)
-		_, err = dbPool.Exec(context.Background(), "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES($1, $2, $3);", hardId, userId, paramId)
-		if err != nil {
-			errorLog.Printf("RegistrationHardware: %vMessageId : %v\n", err, messageId)
-			return nil, errors.New("SQL query insert 3 execution error")
-		}
+		paramsId = append(paramsId, paramId)
 		infoLog.Println("OK")
+	}
+
+	_, err = dbPool.Exec(context.Background(), "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES($1, $2, $3);", hardId, userId, paramsId)
+	if err != nil {
+		errorLog.Printf("RegistrationHardware: %vMessageId : %v\n", err, messageId)
+		return nil, errors.New("SQL query insert 3 execution error")
 	}
 
 	responce := &pr.RegistrationResponse{MessageId: messageId, ErrorCode: "OK"}
