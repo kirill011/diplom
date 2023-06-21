@@ -149,7 +149,7 @@ func (ApiServ) Registration(ctx context.Context, req *pr.RegistrationRequest) (*
 		return nil, errors.New("Password must be more than 6 characters")
 	}
 
-	_, err = dbPool.Exec(context.Background(), "INSERT INTO public.users(login, password, actual, token) VALUES($1, $2, true, $3);", req.Login, req.Password, b64.StdEncoding.EncodeToString([]byte(req.Login+":"+req.Password)))
+	_, err = dbPool.Exec(context.Background(), "INSERT INTO public.users(login, password, token) VALUES($1, $2, $3);", req.Login, req.Password, b64.StdEncoding.EncodeToString([]byte(req.Login+":"+req.Password)))
 	if err != nil {
 		errorLog.Printf("Registration: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("SQL query execution error")
