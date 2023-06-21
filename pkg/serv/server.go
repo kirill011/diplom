@@ -231,7 +231,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		}
 		batch.Queue(query, args)
 	}
-
+	infoLog.Println(batch)
 	res := dbPool.SendBatch(context.Background(), batch)
 	defer res.Close()
 	_, err = res.Exec()
