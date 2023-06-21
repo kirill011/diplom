@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"strconv"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/grpc"
@@ -207,7 +208,8 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("Error reading 1 result of SQL query")
 	}
-	paramsId := make([]int, 1, 1)
+	paramsId := make([]int, 1)
+
 	for _, val := range req.Params {
 
 		var paramId int
@@ -227,7 +229,15 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		infoLog.Println("OK")
 	}
 
-	_, err = dbPool.Exec(context.Background(), "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES($1, $2, $3);", hardId, userId, paramsId)
+	query := "INSERT INTO public.unit (hardware_id, user_id, param_id) VALUES "
+	for i, val := range paramsId {
+		if i != 0 {
+			query += ", "
+		}
+		query += "(" + strconv.FormatInt(int64(hardId), 10) + ", " + strconv.FormatInt(int64(userId), 10) + ", " + strconv.FormatInt(int64(val), 10) + ")"
+	}
+	query += ";"
+	_, err = dbPool.Exec(context.Background(), query)
 	if err != nil {
 		errorLog.Printf("RegistrationHardware: %vMessageId : %v\n", err, messageId)
 		return nil, errors.New("SQL query insert 3 execution error")
