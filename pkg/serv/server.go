@@ -9,6 +9,7 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"time"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -231,13 +232,15 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		}
 		batch.Queue(query, args)
 	}
-	res := dbPool.SendBatch(context.Background(), batch)
-	res.Close()
+	cont, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	res := dbPool.SendBatch(cont, batch)
 	_, err = res.Exec()
 	if err != nil {
 		errorLog.Printf("RegistrationHardware: %vMessageId : %v\n", err, messageId)
 		return nil, errors.New("SQL query insert 3 execution error")
 	}
+	res.Close()
 
 	responce := &pr.RegistrationResponse{MessageId: messageId, ErrorCode: "OK"}
 	infoLog.Printf("RegistrationHardware: request successful. MessageId: %v\n", messageId)
