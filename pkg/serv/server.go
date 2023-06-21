@@ -174,7 +174,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 	}
 
 	match, _ := regexp.MatchString(`([0-9]{1,3}[\.]){3}[0-9]{1,3}`, req.Ip)
-	if match != true {
+	if !match {
 		errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", errors.New("No valid Host"), messageId)
 		return nil, errors.New("No valid Host")
 	}
@@ -185,15 +185,9 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 		return nil, errors.New("SQL query select execution error")
 	}
 
-	counter := 0
 	var userId int
 	var hardId int
 	for rows.Next() {
-		counter++
-		if counter > 1 {
-			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", errors.New("Multiple users have the same token"), messageId)
-			return nil, errors.New("Multiple users have the same token")
-		}
 		hardRows, err := dbPool.Query(context.Background(), "INSERT INTO public.hardware(hard_name, ip) VALUES($1, $2) returning hardware_id", req.HardName, req.Ip)
 		if err != nil {
 			errorLog.Printf("RegistrationHardware: %v MessageId : %v\n", err, messageId)
