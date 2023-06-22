@@ -115,10 +115,10 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 			client := send.NewUnaryClient(conn)
 
 			res, err := client.SendToClient(context.Background(), &send.Message{Host: host, HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: messageId})
-			//if err != nil {
-			//	errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
-			//	return nil, errors.New("Function SendToClient error")
-			//}
+			if err != nil {
+				errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
+				//	return nil, errors.New("Function SendToClient error")
+			}
 
 			_, err = dbPool.Exec(context.Background(), "UPDATE params p SET current_value= $1 from hardware h  WHERE h.hardware_id = $2 and p.param_id = $3;", val.ParamValue, req.HardwareId, val.ParamId)
 			if err != nil {
