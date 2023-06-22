@@ -126,6 +126,7 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 		ret = res
 	}
 
+	conn.Close()
 	responce := &pr.UpdateResponse{MessageId: messageId, ErrorCode: ret.ErrorCode}
 	infoLog.Printf("UpdateParamValue: request successful. MessageId: %v\n", messageId)
 	return responce, nil
