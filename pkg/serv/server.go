@@ -113,18 +113,17 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 
 		counter := 0
 		client := send.NewUnaryClient(conn)
-		infoLog.Println("tut1")
+
 		var errSend error
 		for errSend != nil && counter <= 5 {
 			counter++
 			ret, errSend = client.SendToClient(context.Background(), &send.Message{Host: host, HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: messageId})
 		}
 
-		if errSend != nil {
+		if errSend == nil {
 			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
 			return nil, errors.New("Function SendToClient error")
 		}
-		infoLog.Println("tut2")
 		_, err = dbPool.Exec(context.Background(), "UPDATE params p SET current_value= $1 from hardware h  WHERE h.hardware_id = $2 and p.param_id = $3;", val.ParamValue, req.HardwareId, val.ParamId)
 		if err != nil {
 			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
@@ -133,7 +132,6 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 
 		conn.Close()
 	}
-	infoLog.Println(ret)
 
 	responce := &pr.UpdateResponse{MessageId: messageId, ErrorCode: ret.ErrorCode}
 	infoLog.Printf("UpdateParamValue: request successful. MessageId: %v\n", messageId)
