@@ -114,7 +114,7 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 		counter := 0
 		client := send.NewUnaryClient(conn)
 
-		var errSend error
+		errSend := errors.New("Serializer unavailable")
 		for errSend != nil && counter <= 5 {
 			counter++
 			ret, errSend = client.SendToClient(context.Background(), &send.Message{Host: host, HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: messageId})
