@@ -22,10 +22,9 @@ func main() {
 	client := api.NewApiClient(conn)
 	ctx := metadata.AppendToOutgoingContext(context.Background(), "token", "Q3ZiOjU0Mw==")
 
-	mas := make([]*api.HardwareParams, 1, 2)
-	mas = append(mas, &api.HardwareParams{ParamName: "1", ParamValue: 1})
-	mas = append(mas, &api.HardwareParams{ParamName: "2", ParamValue: 2})
-	res, err := client.RegistrationHardware(ctx, &api.RegistrationHardwareRequest{HardName: "Yasha", Ip: "10.01.01.01", Token: "Q3ZiOjU0Mw=="})
+	mas := make([]*api.UpdateParams, 1, 2)
+	mas = append(mas, &api.UpdateParams{ParamId: 62, ParamValue: 1})
+	res, err := client.UpdateParamValue(ctx, &api.UpdateRequest{HardwareId: 60, Params: mas, Token: "U3RyZWtvemE6MTIzNDU2Nw=="})
 	if err != nil {
 		errorLog.Printf("Client: %v\n", err)
 	}
