@@ -23,7 +23,7 @@ func main() {
 	ctx := metadata.AppendToOutgoingContext(context.Background(), "token", "Q3ZiOjU0Mw==")
 
 	var mas []*api.UpdateParams
-	mas = append(mas, &api.UpdateParams{ParamId: 62, ParamValue: 1})
+	mas = append(mas, &api.UpdateParams{ParamId: 62, ParamValue: 1.1})
 	res, err := client.UpdateParamValue(ctx, &api.UpdateRequest{HardwareId: 60, Token: "U3RyZWtvemE6MTIzNDU2Nw==", Params: mas})
 	if err != nil {
 		errorLog.Printf("Client: %v\n", err)
