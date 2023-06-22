@@ -108,7 +108,7 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 		conn, err := grpc.Dial("127.0.0.1:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
 			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
-			return nil, errors.New("Error reading result of SQL query")
+			return nil, errors.New("Error connect to serializer")
 		}
 
 		counter := 0
@@ -120,7 +120,7 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 			ret, errSend = client.SendToClient(context.Background(), &send.Message{Host: host, HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: messageId})
 		}
 
-		if err != nil {
+		if errSend != nil {
 			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
 			return nil, errors.New("Function SendToClient error")
 		}
