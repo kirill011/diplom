@@ -307,7 +307,7 @@ func (ApiServ) GetParamId(ctx context.Context, req *pr.ParamIdRequest) (*pr.Para
 		return nil, errors.New("Unable to connect to database")
 	}
 
-	rows, err := dbPool.Query(context.Background(), "select p.param_name, p.param_id from public.params p join unit u on u.param_id = p.param_id join public.users us on us.user_id = u.user_id join public.hardware u on u.hardware_id = h.hardware_id where us.token = $1 and h.hardware_id = $2 limit 1;", req.Token, req.HardwareId)
+	rows, err := dbPool.Query(context.Background(), "select p.param_name, p.param_id from public.params p join unit u on u.param_id = p.param_id join public.users us on us.user_id = u.user_id join public.hardware h on u.hardware_id = h.hardware_id where us.token = $1 and h.hardware_id = $2 limit 1;", req.Token, req.HardwareId)
 	if err != nil {
 		errorLog.Printf("GetParamId: %v MessageId : %v\n", err, messageId)
 		return nil, errors.New("SQL query select execution error")
