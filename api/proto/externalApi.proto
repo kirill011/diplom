@@ -18,7 +18,7 @@ service api {
     rpc Registration(RegistrationRequest) returns (RegistrationResponse){};
 
     //Метод позволяет зарегистрировать оборудование пользователя
-    rpc RegistrationHardware(RegistrationHardwareRequest) returns (RegistrationResponse){};
+    rpc RegistrationHardware(RegistrationHardwareRequest) returns (RegistrationHardwareResponse){};
 
     //Метод позволяет получить все id оборудования пользователя
     rpc GetHardwareId(HardwareIdRequest) returns (HardwereIdResponce){};
@@ -79,6 +79,11 @@ message RegistrationRequest{
 }
 
 message RegistrationResponse{
+    string MessageId = 1;
+    string ErrorCode = 2;
+}
+
+message RegistrationHardwareResponse{
     string MessageId = 1;
     string ErrorCode = 2;
     int32 HardId = 3;

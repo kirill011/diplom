@@ -41,7 +41,7 @@ type ApiClient interface {
 	// Метод позволяет зарегистрировать нового пользователя.
 	Registration(ctx context.Context, in *RegistrationRequest, opts ...grpc.CallOption) (*RegistrationResponse, error)
 	// Метод позволяет зарегистрировать оборудование пользователя
-	RegistrationHardware(ctx context.Context, in *RegistrationHardwareRequest, opts ...grpc.CallOption) (*RegistrationResponse, error)
+	RegistrationHardware(ctx context.Context, in *RegistrationHardwareRequest, opts ...grpc.CallOption) (*RegistrationHardwareResponse, error)
 	// Метод позволяет получить все id оборудования пользователя
 	GetHardwareId(ctx context.Context, in *HardwareIdRequest, opts ...grpc.CallOption) (*HardwereIdResponce, error)
 	// Метод позволяет получить все id параметров выбранного оборудования
@@ -85,8 +85,8 @@ func (c *apiClient) Registration(ctx context.Context, in *RegistrationRequest, o
 	return out, nil
 }
 
-func (c *apiClient) RegistrationHardware(ctx context.Context, in *RegistrationHardwareRequest, opts ...grpc.CallOption) (*RegistrationResponse, error) {
-	out := new(RegistrationResponse)
+func (c *apiClient) RegistrationHardware(ctx context.Context, in *RegistrationHardwareRequest, opts ...grpc.CallOption) (*RegistrationHardwareResponse, error) {
+	out := new(RegistrationHardwareResponse)
 	err := c.cc.Invoke(ctx, Api_RegistrationHardware_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -134,7 +134,7 @@ type ApiServer interface {
 	// Метод позволяет зарегистрировать нового пользователя.
 	Registration(context.Context, *RegistrationRequest) (*RegistrationResponse, error)
 	// Метод позволяет зарегистрировать оборудование пользователя
-	RegistrationHardware(context.Context, *RegistrationHardwareRequest) (*RegistrationResponse, error)
+	RegistrationHardware(context.Context, *RegistrationHardwareRequest) (*RegistrationHardwareResponse, error)
 	// Метод позволяет получить все id оборудования пользователя
 	GetHardwareId(context.Context, *HardwareIdRequest) (*HardwereIdResponce, error)
 	// Метод позволяет получить все id параметров выбранного оборудования
@@ -157,7 +157,7 @@ func (UnimplementedApiServer) UpdateParamValue(context.Context, *UpdateRequest) 
 func (UnimplementedApiServer) Registration(context.Context, *RegistrationRequest) (*RegistrationResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Registration not implemented")
 }
-func (UnimplementedApiServer) RegistrationHardware(context.Context, *RegistrationHardwareRequest) (*RegistrationResponse, error) {
+func (UnimplementedApiServer) RegistrationHardware(context.Context, *RegistrationHardwareRequest) (*RegistrationHardwareResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method RegistrationHardware not implemented")
 }
 func (UnimplementedApiServer) GetHardwareId(context.Context, *HardwareIdRequest) (*HardwereIdResponce, error) {

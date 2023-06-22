@@ -32,7 +32,7 @@ class apiStub(object):
         self.RegistrationHardware = channel.unary_unary(
                 '/api.api/RegistrationHardware',
                 request_serializer=externalApi__pb2.RegistrationHardwareRequest.SerializeToString,
-                response_deserializer=externalApi__pb2.RegistrationResponse.FromString,
+                response_deserializer=externalApi__pb2.RegistrationHardwareResponse.FromString,
                 )
         self.GetHardwareId = channel.unary_unary(
                 '/api.api/GetHardwareId',
@@ -126,7 +126,7 @@ def add_apiServicer_to_server(servicer, server):
             'RegistrationHardware': grpc.unary_unary_rpc_method_handler(
                     servicer.RegistrationHardware,
                     request_deserializer=externalApi__pb2.RegistrationHardwareRequest.FromString,
-                    response_serializer=externalApi__pb2.RegistrationResponse.SerializeToString,
+                    response_serializer=externalApi__pb2.RegistrationHardwareResponse.SerializeToString,
             ),
             'GetHardwareId': grpc.unary_unary_rpc_method_handler(
                     servicer.GetHardwareId,
@@ -217,7 +217,7 @@ class api(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/api.api/RegistrationHardware',
             externalApi__pb2.RegistrationHardwareRequest.SerializeToString,
-            externalApi__pb2.RegistrationResponse.FromString,
+            externalApi__pb2.RegistrationHardwareResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

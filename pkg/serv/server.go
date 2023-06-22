@@ -162,7 +162,7 @@ func (ApiServ) Registration(ctx context.Context, req *pr.RegistrationRequest) (*
 }
 
 // Функция для регистрации оборудования
-func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHardwareRequest) (*pr.RegistrationResponse, error) {
+func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHardwareRequest) (*pr.RegistrationHardwareResponse, error) {
 	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 	messageId, err := GetMessageId(ctx)
@@ -193,7 +193,7 @@ func (ApiServ) RegistrationHardware(ctx context.Context, req *pr.RegistrationHar
 	hardRows.Next()
 	hardRows.Scan(&hardId)
 
-	responce := &pr.RegistrationResponse{MessageId: messageId, ErrorCode: "OK", HardId: int32(hardId)}
+	responce := &pr.RegistrationHardwareResponse{MessageId: messageId, ErrorCode: "OK", HardId: int32(hardId)}
 	infoLog.Printf("RegistrationHardware: request successful. MessageId: %v\n", messageId)
 	return responce, nil
 }

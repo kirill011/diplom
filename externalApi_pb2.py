@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11\x65xternalApi.proto\x12\x03\x61pi\"T\n\x0cRegParamsReq\x12\x0e\n\x06HardId\x18\x01 \x01(\x05\x12\r\n\x05Token\x18\x02 \x01(\t\x12\x11\n\tParamName\x18\x03 \x01(\t\x12\x12\n\nParamValue\x18\x04 \x01(\x02\"9\n\x11RegParamsResponce\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x11\n\tErrorCode\x18\x02 \x01(\t\"3\n\x0fHardwareRequest\x12\x11\n\tHarwareId\x18\x01 \x01(\x05\x12\r\n\x05Token\x18\x02 \x01(\t\"7\n\x0eHardwareParams\x12\x11\n\tParamName\x18\x01 \x01(\t\x12\x12\n\nParamValue\x18\x02 \x01(\x02\"J\n\x10HardwareResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12#\n\x06Params\x18\x02 \x03(\x0b\x32\x13.api.HardwareParams\"3\n\x0cUpdateParams\x12\x0f\n\x07ParamId\x18\x01 \x01(\x05\x12\x12\n\nParamValue\x18\x02 \x01(\x02\"U\n\rUpdateRequest\x12\x12\n\nHardwareId\x18\x01 \x01(\x05\x12\r\n\x05Token\x18\x02 \x01(\t\x12!\n\x06Params\x18\x03 \x03(\x0b\x32\x11.api.UpdateParams\"6\n\x0eUpdateResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x11\n\tErrorCode\x18\x02 \x01(\t\"6\n\x13RegistrationRequest\x12\r\n\x05Login\x18\x01 \x01(\t\x12\x10\n\x08Password\x18\x02 \x01(\t\"L\n\x14RegistrationResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x11\n\tErrorCode\x18\x02 \x01(\t\x12\x0e\n\x06HardId\x18\x03 \x01(\x05\"J\n\x1bRegistrationHardwareRequest\x12\x10\n\x08HardName\x18\x01 \x01(\t\x12\n\n\x02Ip\x18\x02 \x01(\t\x12\r\n\x05Token\x18\x03 \x01(\t\"\"\n\x11HardwareIdRequest\x12\r\n\x05Token\x18\x01 \x01(\t\"I\n\x12HardwereIdResponce\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12 \n\x04Rows\x18\x02 \x03(\x0b\x32\x12.api.HardwareIdAll\"9\n\rHardwareIdAll\x12\x14\n\x0cHardwareName\x18\x01 \x01(\t\x12\x12\n\nHardwareId\x18\x02 \x01(\x05\"3\n\x0eParamIdRequest\x12\r\n\x05Token\x18\x01 \x01(\t\x12\x12\n\nHardwareId\x18\x02 \x01(\x05\"C\n\x0fParamIdResponce\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x1d\n\x04Rows\x18\x02 \x03(\x0b\x32\x0f.api.ParamIdAll\"0\n\nParamIdAll\x12\x11\n\tParamName\x18\x01 \x01(\t\x12\x0f\n\x07ParamId\x18\x02 \x01(\x05\x32\xe7\x03\n\x03\x61pi\x12\x41\n\x10GetHardwareValue\x12\x14.api.HardwareRequest\x1a\x15.api.HardwareResponse\"\x00\x12=\n\x10UpdateParamValue\x12\x12.api.UpdateRequest\x1a\x13.api.UpdateResponse\"\x00\x12\x45\n\x0cRegistration\x12\x18.api.RegistrationRequest\x1a\x19.api.RegistrationResponse\"\x00\x12U\n\x14RegistrationHardware\x12 .api.RegistrationHardwareRequest\x1a\x19.api.RegistrationResponse\"\x00\x12\x42\n\rGetHardwareId\x12\x16.api.HardwareIdRequest\x1a\x17.api.HardwereIdResponce\"\x00\x12\x39\n\nGetParamId\x12\x13.api.ParamIdRequest\x1a\x14.api.ParamIdResponce\"\x00\x12\x41\n\x12RegistrationParams\x12\x11.api.RegParamsReq\x1a\x16.api.RegParamsResponce\"\x00\x42\x0bZ\tapi/protob\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11\x65xternalApi.proto\x12\x03\x61pi\"T\n\x0cRegParamsReq\x12\x0e\n\x06HardId\x18\x01 \x01(\x05\x12\r\n\x05Token\x18\x02 \x01(\t\x12\x11\n\tParamName\x18\x03 \x01(\t\x12\x12\n\nParamValue\x18\x04 \x01(\x02\"9\n\x11RegParamsResponce\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x11\n\tErrorCode\x18\x02 \x01(\t\"3\n\x0fHardwareRequest\x12\x11\n\tHarwareId\x18\x01 \x01(\x05\x12\r\n\x05Token\x18\x02 \x01(\t\"7\n\x0eHardwareParams\x12\x11\n\tParamName\x18\x01 \x01(\t\x12\x12\n\nParamValue\x18\x02 \x01(\x02\"J\n\x10HardwareResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12#\n\x06Params\x18\x02 \x03(\x0b\x32\x13.api.HardwareParams\"3\n\x0cUpdateParams\x12\x0f\n\x07ParamId\x18\x01 \x01(\x05\x12\x12\n\nParamValue\x18\x02 \x01(\x02\"U\n\rUpdateRequest\x12\x12\n\nHardwareId\x18\x01 \x01(\x05\x12\r\n\x05Token\x18\x02 \x01(\t\x12!\n\x06Params\x18\x03 \x03(\x0b\x32\x11.api.UpdateParams\"6\n\x0eUpdateResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x11\n\tErrorCode\x18\x02 \x01(\t\"6\n\x13RegistrationRequest\x12\r\n\x05Login\x18\x01 \x01(\t\x12\x10\n\x08Password\x18\x02 \x01(\t\"<\n\x14RegistrationResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x11\n\tErrorCode\x18\x02 \x01(\t\"T\n\x1cRegistrationHardwareResponse\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x11\n\tErrorCode\x18\x02 \x01(\t\x12\x0e\n\x06HardId\x18\x03 \x01(\x05\"J\n\x1bRegistrationHardwareRequest\x12\x10\n\x08HardName\x18\x01 \x01(\t\x12\n\n\x02Ip\x18\x02 \x01(\t\x12\r\n\x05Token\x18\x03 \x01(\t\"\"\n\x11HardwareIdRequest\x12\r\n\x05Token\x18\x01 \x01(\t\"I\n\x12HardwereIdResponce\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12 \n\x04Rows\x18\x02 \x03(\x0b\x32\x12.api.HardwareIdAll\"9\n\rHardwareIdAll\x12\x14\n\x0cHardwareName\x18\x01 \x01(\t\x12\x12\n\nHardwareId\x18\x02 \x01(\x05\"3\n\x0eParamIdRequest\x12\r\n\x05Token\x18\x01 \x01(\t\x12\x12\n\nHardwareId\x18\x02 \x01(\x05\"C\n\x0fParamIdResponce\x12\x11\n\tMessageId\x18\x01 \x01(\t\x12\x1d\n\x04Rows\x18\x02 \x03(\x0b\x32\x0f.api.ParamIdAll\"0\n\nParamIdAll\x12\x11\n\tParamName\x18\x01 \x01(\t\x12\x0f\n\x07ParamId\x18\x02 \x01(\x05\x32\xef\x03\n\x03\x61pi\x12\x41\n\x10GetHardwareValue\x12\x14.api.HardwareRequest\x1a\x15.api.HardwareResponse\"\x00\x12=\n\x10UpdateParamValue\x12\x12.api.UpdateRequest\x1a\x13.api.UpdateResponse\"\x00\x12\x45\n\x0cRegistration\x12\x18.api.RegistrationRequest\x1a\x19.api.RegistrationResponse\"\x00\x12]\n\x14RegistrationHardware\x12 .api.RegistrationHardwareRequest\x1a!.api.RegistrationHardwareResponse\"\x00\x12\x42\n\rGetHardwareId\x12\x16.api.HardwareIdRequest\x1a\x17.api.HardwereIdResponce\"\x00\x12\x39\n\nGetParamId\x12\x13.api.ParamIdRequest\x1a\x14.api.ParamIdResponce\"\x00\x12\x41\n\x12RegistrationParams\x12\x11.api.RegParamsReq\x1a\x16.api.RegParamsResponce\"\x00\x42\x0bZ\tapi/protob\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'externalApi_pb2', globals())
@@ -40,21 +40,23 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _REGISTRATIONREQUEST._serialized_start=553
   _REGISTRATIONREQUEST._serialized_end=607
   _REGISTRATIONRESPONSE._serialized_start=609
-  _REGISTRATIONRESPONSE._serialized_end=685
-  _REGISTRATIONHARDWAREREQUEST._serialized_start=687
-  _REGISTRATIONHARDWAREREQUEST._serialized_end=761
-  _HARDWAREIDREQUEST._serialized_start=763
-  _HARDWAREIDREQUEST._serialized_end=797
-  _HARDWEREIDRESPONCE._serialized_start=799
-  _HARDWEREIDRESPONCE._serialized_end=872
-  _HARDWAREIDALL._serialized_start=874
-  _HARDWAREIDALL._serialized_end=931
-  _PARAMIDREQUEST._serialized_start=933
-  _PARAMIDREQUEST._serialized_end=984
-  _PARAMIDRESPONCE._serialized_start=986
-  _PARAMIDRESPONCE._serialized_end=1053
-  _PARAMIDALL._serialized_start=1055
-  _PARAMIDALL._serialized_end=1103
-  _API._serialized_start=1106
-  _API._serialized_end=1593
+  _REGISTRATIONRESPONSE._serialized_end=669
+  _REGISTRATIONHARDWARERESPONSE._serialized_start=671
+  _REGISTRATIONHARDWARERESPONSE._serialized_end=755
+  _REGISTRATIONHARDWAREREQUEST._serialized_start=757
+  _REGISTRATIONHARDWAREREQUEST._serialized_end=831
+  _HARDWAREIDREQUEST._serialized_start=833
+  _HARDWAREIDREQUEST._serialized_end=867
+  _HARDWEREIDRESPONCE._serialized_start=869
+  _HARDWEREIDRESPONCE._serialized_end=942
+  _HARDWAREIDALL._serialized_start=944
+  _HARDWAREIDALL._serialized_end=1001
+  _PARAMIDREQUEST._serialized_start=1003
+  _PARAMIDREQUEST._serialized_end=1054
+  _PARAMIDRESPONCE._serialized_start=1056
+  _PARAMIDRESPONCE._serialized_end=1123
+  _PARAMIDALL._serialized_start=1125
+  _PARAMIDALL._serialized_end=1173
+  _API._serialized_start=1176
+  _API._serialized_end=1671
 # @@protoc_insertion_point(module_scope)
