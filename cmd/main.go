@@ -18,7 +18,7 @@ func main() {
 	s := grpc.NewServer(grpc.UnaryInterceptor(inter.ServerAuthentication))
 	api.RegisterApiServer(s, &serv.ApiServ{})
 
-	l, err := net.Listen("tcp", ":8080")
+	l, err := net.Listen("tcp", ":50800")
 	if err != nil {
 		errorLog.Fatalf("Server: %v\n", err)
 	}

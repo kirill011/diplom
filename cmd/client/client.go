@@ -15,7 +15,7 @@ import (
 func main() {
 	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
 
-	conn, err := grpc.Dial("127.0.0.1:8080", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("127.0.0.1:50800", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		errorLog.Fatalf("Client: %v\n", err)
 	}
