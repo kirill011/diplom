@@ -113,7 +113,7 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 
 		counter := 0
 		client := send.NewUnaryClient(conn)
-
+		infoLog.Println("tut1")
 		var errSend error
 		for errSend != nil && counter <= 5 {
 			counter++
@@ -124,7 +124,7 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
 			return nil, errors.New("Function SendToClient error")
 		}
-
+		infoLog.Println("tut2")
 		_, err = dbPool.Exec(context.Background(), "UPDATE params p SET current_value= $1 from hardware h  WHERE h.hardware_id = $2 and p.param_id = $3;", val.ParamValue, req.HardwareId, val.ParamId)
 		if err != nil {
 			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
