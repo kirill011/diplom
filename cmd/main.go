@@ -26,5 +26,4 @@ func main() {
 	if err := s.Serve(l); err != nil {
 		errorLog.Fatalf("Server: %v\n", err)
 	}
-	select {}
 }

@@ -87,12 +87,6 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 		return nil, errors.New("Unable to connect to database")
 	}
 
-	conn, err := grpc.Dial("127.0.0.1:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
-	if err != nil {
-		errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
-		return nil, errors.New("Error reading result of SQL query")
-	}
-
 	rows, err := dbPool.Query(context.Background(), "select ip from public.hardware where hardware_id = $1 limit 1;", req.HardwareId)
 	if err != nil {
 		errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
@@ -108,9 +102,16 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 		}
 	}
 
-	client := send.NewUnaryClient(conn)
 	var ret *send.MessageResponse
 	for _, val := range req.Params {
+		conn, err := grpc.Dial("127.0.0.1:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+		if err != nil {
+			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
+			return nil, errors.New("Error reading result of SQL query")
+		}
+
+		client := send.NewUnaryClient(conn)
+
 		res, err := client.SendToClient(context.Background(), &send.Message{Host: host, HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: messageId})
 		if err != nil {
 			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
@@ -123,10 +124,10 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 			return nil, errors.New("SQL query execution error")
 		}
 
+		conn.Close()
 		ret = res
 	}
 
-	conn.Close()
 	responce := &pr.UpdateResponse{MessageId: messageId, ErrorCode: ret.ErrorCode}
 	infoLog.Printf("UpdateParamValue: request successful. MessageId: %v\n", messageId)
 	return responce, nil
