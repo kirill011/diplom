@@ -22,9 +22,9 @@ func main() {
 	client := api.NewApiClient(conn)
 	ctx := metadata.AppendToOutgoingContext(context.Background(), "token", "Q3ZiOjU0Mw==")
 
-	mas := make([]*api.UpdateParams, 1, 2)
-	mas = append(mas, &api.UpdateParams{ParamId: 62, ParamValue: 1})
-	res, err := client.UpdateParamValue(ctx, &api.UpdateRequest{HardwareId: 60, Params: mas, Token: "U3RyZWtvemE6MTIzNDU2Nw=="})
+	var mas []*api.UpdateParams
+	mas[0] = &api.UpdateParams{ParamId: 62, ParamValue: 1}
+	res, err := client.UpdateParamValue(ctx, &api.UpdateRequest{HardwareId: 60, Token: "U3RyZWtvemE6MTIzNDU2Nw==", Params: mas})
 	if err != nil {
 		errorLog.Printf("Client: %v\n", err)
 	}
