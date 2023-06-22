@@ -108,26 +108,17 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 		conn, err := grpc.Dial("127.0.0.1:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
 			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
-			return nil, errors.New("Error connect to serializer")
+			return nil, errors.New("Error reading result of SQL query")
 		}
 
-		counter := 0
 		client := send.NewUnaryClient(conn)
 
-		errSend := errors.New("Serializer unavailable")
-		for errSend != nil && counter <= 5 {
-			counter++
-			ret, errSend = client.SendToClient(context.Background(), &send.Message{Host: host, HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: messageId})
-			if errSend != nil {
-				errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", errSend, messageId)
-				ret.ErrorCode = "Not OK"
-			}
-		}
-
-		if errSend == nil {
-			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", errors.New("Serializer unavailable"), messageId)
+		res, err := client.SendToClient(context.Background(), &send.Message{Host: host, HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: messageId})
+		if err != nil {
+			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
 			return nil, errors.New("Function SendToClient error")
 		}
+
 		_, err = dbPool.Exec(context.Background(), "UPDATE params p SET current_value= $1 from hardware h  WHERE h.hardware_id = $2 and p.param_id = $3;", val.ParamValue, req.HardwareId, val.ParamId)
 		if err != nil {
 			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
@@ -135,6 +126,7 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 		}
 
 		conn.Close()
+		ret = res
 	}
 
 	responce := &pr.UpdateResponse{MessageId: messageId, ErrorCode: ret.ErrorCode}
