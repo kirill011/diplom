@@ -121,7 +121,7 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 		}
 
 		if errSend == nil {
-			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", err, messageId)
+			errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", errors.New("Serializer unavailable"), messageId)
 			return nil, errors.New("Function SendToClient error")
 		}
 		_, err = dbPool.Exec(context.Background(), "UPDATE params p SET current_value= $1 from hardware h  WHERE h.hardware_id = $2 and p.param_id = $3;", val.ParamValue, req.HardwareId, val.ParamId)
