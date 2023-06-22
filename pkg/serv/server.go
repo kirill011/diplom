@@ -118,6 +118,10 @@ func (ApiServ) UpdateParamValue(ctx context.Context, req *pr.UpdateRequest) (*pr
 		for errSend != nil && counter <= 5 {
 			counter++
 			ret, errSend = client.SendToClient(context.Background(), &send.Message{Host: host, HardId: req.HardwareId, ComandId: val.ParamId, Value: val.ParamValue, MessageId: messageId})
+			if errSend != nil {
+				errorLog.Printf("UpdateParamValue: %v MessageId : %v\n", errSend, messageId)
+				return nil, errors.New("Function SendToClient error")
+			}
 		}
 
 		if errSend == nil {
