@@ -20,15 +20,6 @@ func main() {
 		errorLog.Fatalf("Client: %v\n", err)
 	}
 	client := api.NewApiClient(conn)
-	//ctx := metadata.AppendToOutgoingContext(context.Background(), "token", "Q3ZiOjU0Mw==")
-
-	// var mas []*api.UpdateParams
-	// mas = append(mas, &api.UpdateParams{ParamId: 62, ParamValue: 1.1})
-	// res, err := client.UpdateParamValue(ctx, &api.UpdateRequest{HardwareId: 60, Token: "U3RyZWtvemE6MTIzNDU2Nw==", Params: mas})
-	// if err != nil {
-	// 	errorLog.Printf("Client: %v\n", err)
-	// }
-	// fmt.Println(res)
 
 	req1 := &api.RegistrationRequest{Login: "NewUser", Password: "123456789"}
 	fmt.Println("RegistrationRequest: ", req1)
@@ -52,4 +43,16 @@ func main() {
 		errorLog.Printf("Client: %v\n", err)
 	}
 	fmt.Println("HardwareResponse: ", res3)
+
+	ctx := metadata.AppendToOutgoingContext(context.Background(), "token", "U3RyZWtvemE6MTIzNDU2Nw==")
+
+	var mas []*api.UpdateParams
+	mas = append(mas, &api.UpdateParams{ParamId: 62, ParamValue: 1.1})
+	req3 := &api.UpdateRequest{HardwareId: 60, Token: "U3RyZWtvemE6MTIzNDU2Nw==", Params: mas}
+	fmt.Println("UpdateRequest: ", req3)
+	res, err := client.UpdateParamValue(ctx, req3)
+	if err != nil {
+		errorLog.Printf("Client: %v\n", err)
+	}
+	fmt.Println("UpdateResponse: ", res)
 }
