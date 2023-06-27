@@ -20,17 +20,25 @@ func main() {
 		errorLog.Fatalf("Client: %v\n", err)
 	}
 	client := api.NewApiClient(conn)
-	ctx := metadata.AppendToOutgoingContext(context.Background(), "token", "Q3ZiOjU0Mw==")
+	//ctx := metadata.AppendToOutgoingContext(context.Background(), "token", "Q3ZiOjU0Mw==")
 
-	var mas []*api.UpdateParams
-	mas = append(mas, &api.UpdateParams{ParamId: 62, ParamValue: 1.1})
-	res, err := client.UpdateParamValue(ctx, &api.UpdateRequest{HardwareId: 60, Token: "U3RyZWtvemE6MTIzNDU2Nw==", Params: mas})
+	// var mas []*api.UpdateParams
+	// mas = append(mas, &api.UpdateParams{ParamId: 62, ParamValue: 1.1})
+	// res, err := client.UpdateParamValue(ctx, &api.UpdateRequest{HardwareId: 60, Token: "U3RyZWtvemE6MTIzNDU2Nw==", Params: mas})
+	// if err != nil {
+	// 	errorLog.Printf("Client: %v\n", err)
+	// }
+	// fmt.Println(res)
+
+	req1 := &api.RegistrationRequest{Login: "NewUser", Password: "123456789"}
+	fmt.Println("RegistrationRequest: ", req1)
+	res1, err := client.Registration(metadata.AppendToOutgoingContext(context.Background(), "token", ""), req1)
 	if err != nil {
 		errorLog.Printf("Client: %v\n", err)
 	}
-	fmt.Println(res)
-
+	fmt.Println(res1)
 	req := &api.HardwareIdRequest{Token: "Q3ZiOjU0Mw=="}
+	fmt.Println("HardwareIDRequest: ", req)
 	res2, err := client.GetHardwareId(metadata.AppendToOutgoingContext(context.Background(), "token", "Q3ZiOjU0Mw=="), req)
 	if err != nil {
 		errorLog.Printf("Client: %v\n", err)

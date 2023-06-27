@@ -12,8 +12,8 @@ import (
 )
 
 func main() {
-	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lmicroseconds)
+	errorLog := log.New(os.Stderr, "ERROR\t", log.Ldate|log.Ltime|log.Lmicroseconds)
 
 	s := grpc.NewServer(grpc.UnaryInterceptor(inter.ServerAuthentication))
 	api.RegisterApiServer(s, &serv.ApiServ{})
