@@ -36,19 +36,20 @@ func main() {
 	if err != nil {
 		errorLog.Printf("Client: %v\n", err)
 	}
-	fmt.Println(res1)
+	fmt.Println("RegistrationResponse: ", res1)
 	req := &api.HardwareIdRequest{Token: "cGFuZGE6NzQxODUyOQ=="}
 	fmt.Println("HardwareIDRequest: ", req)
 	res2, err := client.GetHardwareId(metadata.AppendToOutgoingContext(context.Background(), "token", "cGFuZGE6NzQxODUyOQ=="), req)
 	if err != nil {
 		errorLog.Printf("Client: %v\n", err)
 	}
-	fmt.Println(res2)
+	fmt.Println("HardwareIdResponse: ", res2)
 
 	req2 := &api.HardwareRequest{HarwareId: 1, Token: "WWFzaGE6TGF2YQ=="}
+	fmt.Println("HardwareRequest: ", req2)
 	res3, err := client.GetHardwareValue(metadata.AppendToOutgoingContext(context.Background(), "token", "WWFzaGE6TGF2YQ=="), req2)
 	if err != nil {
 		errorLog.Printf("Client: %v\n", err)
 	}
-	fmt.Println(res3)
+	fmt.Println("HardwareResponse: ", res3)
 }
